@@ -128,3 +128,14 @@
 .idea-step>span:first-child{display:grid;place-items:center;width:21px;height:21px;flex-shrink:0;border-radius:7px;background:#e6ddfb;color:#6f4ed3;font-weight:700}
 .idea-lab-card .converter-actions{margin-top:13px}
 @media(max-width:650px){.idea-lab-card .converter-actions{flex-direction:column-reverse}.idea-lab-card .converter-actions .btn{width:100%}}
+
+
+/* Real on-page AI image generation */
+.generated-image-panel{margin-top:15px;padding:13px;border:1px solid #e8e0f6;border-radius:14px;background:#fbf9ff}
+.generated-image-panel[hidden]{display:none}
+.generated-image-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px}
+.generated-image-top strong{font:700 12px "Space Grotesk",sans-serif}
+.generated-image-output{display:grid;place-items:center;min-height:80px;border-radius:10px;overflow:hidden;background:#f0ebf8}
+.generated-image{display:block;width:100%;height:auto;max-height:650px;object-fit:contain}
+#generate-image:disabled{opacity:.65;cursor:wait;transform:none}
+@media(max-width:650px){.generated-image-top{align-items:stretch;flex-direction:column}.generated-image-top .btn{width:100%}}
