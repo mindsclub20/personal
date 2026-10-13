@@ -3,7 +3,9 @@
 A responsive, lavender-themed collection of useful browser tools.
 
 ## Features
-- Quick links to official ChatGPT, Google Gemini, and Claude websites (API integration is not enabled yet).
+- Quick links to official ChatGPT, Google Gemini, and Claude websites.
+- Gemini chat endpoint in `api/chat.js`; API key is read only from Vercel server-side environment variables.
+- Chat supports text, images, PDFs, TXT, Markdown, CSV, and JSON attachments (2.5 MB maximum). Conversations remain in local browser storage; attachment contents are not saved to chat history.
 - AI image studio prompt builder with style/aspect-ratio options; opens ChatGPT for generation (direct API integration is not enabled yet).\n- Calculator with parentheses and keyboard input, using a parser rather than JavaScript eval.
 - File converter for common image, PDF, and text files to PDF, PPTX, PNG, or JPEG. Multiple images can be combined into a PDF or PowerPoint; multiple image exports are bundled in a ZIP.
 - Quick notes saved locally in the current browser/device.
@@ -21,13 +23,15 @@ python -m http.server 8000
 Then visit `http://localhost:8000`.
 
 ## Privacy and API readiness
-- The site does not call AI APIs or ask for API keys.
+- Gemini requests run through the Vercel serverless endpoint. Configure `GEMINI_API_KEY` in Vercel; never commit it or place it in browser JavaScript.
+- Uploaded images/PDFs and text-file contents are sent to Google Gemini for processing. Do not upload private or sensitive material.
+- The endpoint includes input validation and best-effort per-instance rate limiting; this is not a substitute for durable abuse protection on a public site.
 - Notes use browser local storage on the current device. Avoid entering passwords or sensitive data.
 - File conversion runs in the browser and does not upload your files. PDF pages are rendered as images during conversion; this prioritizes appearance over selectable text.
 - If AI APIs are added later, route requests through a backend and store provider keys in server-side environment variables. Never place secret API keys in client-side JavaScript.
 
 ## Deployment
-This is a static site suitable for Vercel. No database or environment variables are required for current features.
+This site uses Vercel's `/api` serverless functions for Gemini chat. Add `GEMINI_API_KEY` to the Vercel project's Preview and Production environments and redeploy after setting it. Test the preview with a harmless text question and a sample image/PDF before merging to `main`. Keep the API key secret.
 
 
 ### File converter limits
