@@ -139,3 +139,8 @@
 .generated-image{display:block;width:100%;height:auto;max-height:650px;object-fit:contain}
 #generate-image:disabled{opacity:.65;cursor:wait;transform:none}
 @media(max-width:650px){.generated-image-top{align-items:stretch;flex-direction:column}.generated-image-top .btn{width:100%}}
+
+
+/* YouTube quick-launch brand accent */
+.youtube .youtube-logo{background:#ff0033;color:#fff;border-radius:12px;}
+.youtube:hover .youtube-logo{background:#d9002b;}
