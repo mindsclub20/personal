@@ -104,3 +104,12 @@
 @keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:650px){.convert-settings{grid-template-columns:1fr;gap:0}.drop-zone{min-height:135px}.converter-actions{flex-direction:column-reverse}.converter-actions .btn{width:100%}}
 @media(prefers-reduced-motion:reduce){.progress-spinner{animation:none}}
+
+
+/* AI image studio */
+.image-icon{background:#eee6ff;color:#7555dc;font-size:22px}
+.image-prompt{min-height:120px}
+.image-prompt-preview{margin-top:12px;padding:12px;background:#f8f5ff;border:1px solid #eee7fa;border-radius:10px;color:#776b8b;font-size:10px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere;max-height:180px;overflow:auto}
+.image-studio-card .converter-actions{margin-top:12px}
+.image-studio-card .tool-heading{margin-bottom:12px}
+@media(max-width:650px){.image-studio-card .converter-actions{flex-direction:column-reverse}.image-studio-card .converter-actions .btn{width:100%}}
