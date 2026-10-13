@@ -65,3 +65,5 @@ body.ws-dark .calc-display,body.ws-dark .calc-expression{color:var(--ws-text)}
 .ws-msg-attachment{display:inline-flex;align-items:center;gap:6px;margin-top:9px;padding:6px 10px;border:1px solid var(--ws-line);border-radius:9px;background:var(--ws-panel);font-size:12px;color:var(--ws-muted);max-width:100%;overflow-wrap:anywhere}
 .ws-composer-tool:disabled,.ws-send:disabled{opacity:.5;cursor:not-allowed}
 @media(max-width:560px){.ws-attachment-status{max-width:42vw;font-size:10px}.ws-composer-tools{gap:5px}.ws-composer-tool{font-size:11px;padding:7px 8px}}
+
+.ws-icon-btn.configured{background:var(--ws-accent-soft);border-color:var(--ws-accent)}
