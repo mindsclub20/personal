@@ -59,3 +59,11 @@ body.ws-dark .calc-display,body.ws-dark .calc-expression{color:var(--ws-text)}
 @media(max-width:760px){.ws-app{grid-template-columns:minmax(0,1fr)}.ws-sidebar{position:absolute;inset:0 auto 0 0;width:min(290px,84vw);z-index:5;transform:translateX(-105%);transition:transform .2s ease;box-shadow:15px 0 40px #0002}.ws-app.sidebar-open .ws-sidebar{transform:translateX(0)}.ws-app.sidebar-open:after{content:"";position:absolute;inset:0;background:#0005;z-index:4}.ws-mobile-menu{display:grid}.ws-topbar{height:54px;padding:0 12px}.ws-chat-scroll{padding:22px 14px 12px}.ws-welcome{padding:20px 0 35px}.ws-welcome h1{font-size:30px}.ws-welcome p{font-size:13px}.ws-suggestions{grid-template-columns:1fr}.ws-suggestion{padding:12px}.ws-composer-wrap{padding:8px 10px calc(10px + env(safe-area-inset-bottom))}.ws-composer-box{border-radius:18px}.ws-composer{font-size:16px}.ws-disclaimer{font-size:9px}.ws-tool-view{padding:16px 12px 30px}.ws-tool-grid{grid-template-columns:1fr;gap:12px}.ws-tool-grid .python-card{grid-column:auto}.ws-tool-head h2{font-size:20px}.ws-tool-head{align-items:flex-start}.ws-model small{display:none}}
 @media(max-width:390px){.ws-topbar{padding:0 8px}.ws-model{font-size:13px}.ws-top-actions{gap:2px}.ws-suggestions{gap:8px}.ws-message.user .ws-msg-content{max-width:90%}.ws-composer-tool{padding:7px 6px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Gemini chat attachments and multimodal states */
+.ws-attachment-status{display:inline-block;max-width:min(230px,38vw);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;color:var(--ws-muted);align-self:center}
+.ws-msg-attachment{display:inline-flex;align-items:center;gap:6px;margin-top:9px;padding:6px 10px;border:1px solid var(--ws-line);border-radius:9px;background:var(--ws-panel);font-size:12px;color:var(--ws-muted);max-width:100%;overflow-wrap:anywhere}
+.ws-composer-tool:disabled,.ws-send:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:560px){.ws-attachment-status{max-width:42vw;font-size:10px}.ws-composer-tools{gap:5px}.ws-composer-tool{font-size:11px;padding:7px 8px}}
+
+.ws-icon-btn.configured{background:var(--ws-accent-soft);border-color:var(--ws-accent)}
