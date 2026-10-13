@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const MAX_ATTACHMENT_BYTES = 2.5 * 1024 * 1024;
 const MAX_INLINE_TEXT_CHARS = 100000;
 const RATE_WINDOW_MS = 60 * 1000;
@@ -60,6 +61,8 @@ module.exports = async function handler(req, res) {
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
+  const expectedAccessCode = process.env.WORKSPACE_ACCESS_CODE;
+  if (!expectedAccessCode) return send(res, 503, { error: "Private AI access is not configured yet. Add WORKSPACE_ACCESS_CODE to this Vercel project's server-side environment variables, then redeploy." });
   if (!apiKey) return send(res, 503, { error: "Gemini is not configured yet. Add GEMINI_API_KEY to this Vercel project's server-side environment variables, then redeploy." });
 
   const ip = String(req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "unknown").split(",")[0].trim();
@@ -70,6 +73,12 @@ module.exports = async function handler(req, res) {
     try { body = JSON.parse(body); } catch { return send(res, 400, { error: "The request body must be valid JSON." }); }
   }
   if (!body || typeof body !== "object") return send(res, 400, { error: "A chat message is required." });
+  const suppliedAccessCode = typeof body.accessCode === "string" ? body.accessCode : "";
+  const expectedBuffer = Buffer.from(expectedAccessCode, "utf8");
+  const suppliedBuffer = Buffer.from(suppliedAccessCode, "utf8");
+  if (expectedBuffer.length !== suppliedBuffer.length || !crypto.timingSafeEqual(expectedBuffer, suppliedBuffer)) {
+    return send(res, 401, { error: "Enter your private workspace access code using the key button in the top bar." });
+  }
 
   const message = typeof body.message === "string" ? body.message.trim() : "";
   const attachment = body.attachment || null;
