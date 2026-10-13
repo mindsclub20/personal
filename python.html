@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f0ff">
+<title>Python Playground · Shyam's Personal Toolbox</title>
+<style>
+:root{color-scheme:light;--ink:#21183b;--muted:#716985;--purple:#7651d5;--purple2:#5e39bd;--line:#e6def8;--panel:#fff;--soft:#f6f2ff;--green:#16845b}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#f7f3ff,#f0f5ff 65%,#fff7fc);color:var(--ink);font:16px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:1120px;margin:auto;padding:20px 16px 48px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}.back{color:var(--purple2);text-decoration:none;font-weight:700}.pill{font-size:12px;background:#e8fff3;color:#116c49;padding:6px 10px;border-radius:999px;font-weight:700}
+.hero{padding:26px;border-radius:24px;background:linear-gradient(120deg,#e8ddff,#f3edff 55%,#e7f1ff);border:1px solid #e0d4fb;margin-bottom:18px}.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:var(--purple2)}h1{font-size:clamp(28px,5vw,42px);line-height:1.12;margin:8px 0 10px;letter-spacing:-.03em}.hero p{margin:0;max-width:700px;color:#514666}.grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(260px,.8fr);gap:16px}.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 8px 28px #4b2b7b0b;min-width:0}.card h2{font-size:17px;margin:0 0 12px}.bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.bar label,label{font-size:13px;font-weight:750;color:#4f4565}.actions{display:flex;flex-wrap:wrap;gap:8px}.btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:10px 13px;border-radius:11px;font:inherit;font-size:13px;font-weight:750;cursor:pointer}.btn:hover{border-color:#bba7ef}.btn.primary{background:var(--purple);border-color:var(--purple);color:#fff}.btn:disabled{opacity:.6;cursor:wait}textarea,select{width:100%;border:1px solid #dcd2f2;border-radius:12px;background:#fcfbff;color:#241a3d;font:14px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;padding:13px;outline:none}textarea:focus,select:focus{border-color:var(--purple);box-shadow:0 0 0 3px #7651d522}#code{min-height:300px;resize:vertical;tab-size:4}#stdin{min-height:74px;resize:vertical}.hint{font-size:12px;color:var(--muted);margin:8px 0 0}.output{background:#19152a;color:#f3edff;border-radius:12px;padding:14px;min-height:160px;white-space:pre-wrap;overflow:auto;overflow-wrap:anywhere;font:13px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace}.status{font-size:12px;color:var(--muted);margin:10px 0 0}.status.error{color:#b42318}.examples{display:grid;gap:8px}.example{padding:11px 12px;text-align:left;border:1px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;color:var(--ink)}.example strong{display:block;font-size:13px}.example span{font-size:12px;color:var(--muted)}.tip{margin-top:14px;background:var(--soft);padding:13px;border-radius:12px;font-size:13px;color:#55476e}.foot{font-size:12px;color:var(--muted);margin:18px 4px 0}.hidden{display:none}@media(max-width:760px){main{padding:12px 12px 32px}.grid{grid-template-columns:1fr}.hero{padding:20px}.card{padding:14px}#code{min-height:260px}.top{align-items:flex-start}.bar{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<main>
+  <div class="top"><a class="back" href="/">← Personal Toolbox</a><span class="pill">Runs in your browser</span></div>
+  <section class="hero"><div class="eyebrow">Learn · Build · Repeat</div><h1>Python Playground 🐍</h1><p>Write real Python, run it, provide input, and learn from the output. No account or API key needed. Your code stays in this browser page unless you choose to share it.</p></section>
+  <div class="grid">
+    <section class="card">
+      <div class="bar"><h2>Code editor</h2><div class="actions"><button class="btn" id="reset">Reset</button><button class="btn primary" id="run">▶ Run Python</button></div></div>
+      <label for="code">main.py</label>
+      <textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off">name = input("What is your name? ")
+print(f"Hello, {name}!")
+print("Let's build something cool.")</textarea>
+      <p class="hint">Tip: press Tab to indent. Keyboard shortcut: Ctrl/⌘ + Enter to run.</p>
+      <div style="margin-top:16px"><label for="stdin">Input values (one per line, used by input())</label><textarea id="stdin" spellcheck="false" placeholder="Shyam">Shyam</textarea></div>
+      <div style="margin-top:16px" class="bar"><h2>Output</h2><button class="btn" id="clear">Clear output</button></div>
+      <pre class="output" id="output" aria-live="polite">Ready when you are. Press “Run Python”.</pre>
+      <p class="status" id="status">Python engine loads on first run and may take a few seconds.</p>
+    </section>
+    <aside class="card">
+      <h2>Try an example</h2>
+      <div class="examples">
+        <button class="example" data-example="hello"><strong>👋 Hello + input</strong><span>Practice input() and print()</span></button>
+        <button class="example" data-example="calculator"><strong>➗ Mini calculator</strong><span>Variables, conversion, and arithmetic</span></button>
+        <button class="example" data-example="loops"><strong>🔁 Loop practice</strong><span>Repeat actions with for</span></button>
+        <button class="example" data-example="dictionary"><strong>🤖 Robot dictionary</strong><span>Store robot details in a dict</span></button>
+        <button class="example" data-example="guess"><strong>🎯 Number challenge</strong><span>Conditions and random numbers</span></button>
+      </div>
+      <div class="tip"><strong>What works?</strong><br>Python's standard library and many pure-Python packages work. This is a browser-based CPython runtime, not a remote server. It cannot directly control physical robots or access your computer's files.</div>
+      <div class="tip"><strong>Safety & privacy</strong><br>Only run code you understand. This page is not a secure sandbox for untrusted code. Avoid secrets, passwords, and private data in programs.</div>
+    </aside>
+  </div>
+  <p class="foot">Powered by Pyodide (Python compiled to WebAssembly). An internet connection is required the first time to load the Python runtime.</p>
+</main>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.27.7/full/pyodide.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const examples = {
+ hello: {code:'name = input("What is your name? ")\nprint(f"Hello, {name}!")\nprint("Welcome to Python.")',input:'Shyam'},
+ calculator: {code:'a = float(input("First number: "))\nb = float(input("Second number: "))\nprint("Sum =", a + b)\nprint("Product =", a * b)\nif b != 0:\n    print("Division =", a / b)\nelse:\n    print("Cannot divide by zero.")',input:'12\n3'},
+ loops: {code:'for number in range(1, 6):\n    print(f"{number} squared = {number ** 2}")',input:''},
+ dictionary: {code:'robot = {\n    "name": "Robo-X",\n    "battery": 75,\n    "distance": 120,\n}\nprint("Robot:", robot["name"])\nprint("Battery:", robot["battery"], "%")\nprint("Distance:", robot["distance"])',input:''},
+ guess: {code:'import random\nsecret = random.randint(1, 10)\nguess = int(input("Guess a number from 1 to 10: "))\nif guess == secret:\n    print("Correct! Nice work.")\nelse:\n    print("Not this time. The number was", secret)',input:'5'}
+};
+let pyodide = null, loading = false, running = false;
+function status(message, error=false){$('status').textContent=message;$('status').classList.toggle('error',error)}
+function appendOutput(text){$('output').textContent += text}
+async function ensurePython(){
+ if(pyodide) return pyodide;
+ if(loading) throw new Error('Python is still loading. Please wait a moment.');
+ loading=true; status('Loading Python runtime… first run may take a little while.'); $('run').disabled=true;
+ try {
+   if(typeof loadPyodide !== 'function') throw new Error('Could not load the Python engine. Check your internet connection and refresh this page.');
+   pyodide=await loadPyodide();
+   pyodide.setStdout({batched: text => appendOutput(text+'\n')});
+   pyodide.setStderr({batched: text => appendOutput('⚠ '+text+'\n')});
+   status('Python is ready.');
+   return pyodide;
+ } finally {loading=false;$('run').disabled=false}
+}
+async function runCode(){
+ if(running||loading)return;
+ running=true;$('run').disabled=true;$('output').textContent='';status('Running…');
+ try{
+   const runtime=await ensurePython();
+   const lines=$('stdin').value.split(/\r?\n/);let index=0;
+   runtime.setStdin({stdin:()=>index<lines.length?lines[index++] : ''});
+   await runtime.runPythonAsync($('code').value);
+   status('Finished successfully ✓');
+ }catch(err){appendOutput(String(err));status('Program finished with an error. Read the output above.',true)}
+ finally{running=false;$('run').disabled=false}
+}
+$('run').addEventListener('click',runCode);
+$('clear').addEventListener('click',()=>{$('output').textContent='';status(pyodide?'Python is ready.':'Ready when you are.')});
+$('reset').addEventListener('click',()=>{$('code').value=examples.hello.code;$('stdin').value=examples.hello.input;$('output').textContent='Ready when you are. Press “Run Python”.';status('Editor reset.')});
+document.querySelectorAll('[data-example]').forEach(button=>button.addEventListener('click',()=>{const ex=examples[button.dataset.example];$('code').value=ex.code;$('stdin').value=ex.input;$('output').textContent='Example loaded. Press “Run Python”.';status('Example loaded: '+button.innerText.replace(/\s+/g,' ').trim())}));
+$('code').addEventListener('keydown',event=>{
+ if(event.key==='Tab'){event.preventDefault();const start=$('code').selectionStart,end=$('code').selectionEnd;const value=$('code').value;$('code').value=value.slice(0,start)+'    '+value.slice(end);$('code').selectionStart=$('code').selectionEnd=start+4}
+ if((event.ctrlKey||event.metaKey)&&event.key==='Enter'){event.preventDefault();runCode()}
+});
+</script>
+</body>
+</html>
