@@ -6,7 +6,10 @@
 <title>Shyam's Toolbox — Useful tools, one place</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css"><script src="script.js" defer></script>
+<link rel="stylesheet" href="styles.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" defer></script><script src="script.js" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to tools</a>
@@ -42,10 +45,14 @@
 <button class="key" data-value="1">1</button><button class="key" data-value="2">2</button><button class="key" data-value="3">3</button><button class="key operator" data-value="+">+</button>
 <button class="key soft" data-value="0">0</button><button class="key" data-value=".">.</button><button class="key soft" data-value=")">)</button><button class="key equals" data-action="equals">=</button>
 </div></div><p class="tool-hint">Tip: You can also type numbers and operators using your keyboard.</p></article>
-<article class="tool-card pdf-card" id="pdf-tool"><div class="tool-heading"><span class="tool-icon pdf-icon">PDF</span><div><h3>PDF document maker</h3><p>Write something and print it as a PDF.</p></div><span class="tool-index">02</span></div>
-<label class="field-label" for="pdf-title">Document title</label><input id="pdf-title" class="text-input" type="text" maxlength="100" value="My document" placeholder="Give your document a title">
-<label class="field-label" for="pdf-content">Your content</label><textarea id="pdf-content" class="text-area pdf-textarea" rows="7" maxlength="20000" placeholder="Start writing your notes, assignment, or document here…"></textarea>
-<div class="pdf-footer"><span class="field-help">Your text is prepared for printing. Choose “Save as PDF” in the print dialog.</span><button class="btn primary" id="export-pdf" type="button">Create PDF <span>↗</span></button></div><p class="status-message" id="pdf-status" role="status"></p></article>
+<article class="tool-card pdf-card file-converter-card" id="pdf-tool"><div class="tool-heading"><span class="tool-icon pdf-icon">⇧</span><div><h3>File converter</h3><p>Turn images, PDFs, and text into the format you need.</p></div><span class="tool-index">02</span></div>
+<div class="drop-zone" id="file-drop-zone" tabindex="0" role="button" aria-label="Choose files to convert"><span class="drop-icon">↥</span><strong>Drop files here</strong><span>or tap to browse your device</span><small>Images · PDF · TXT · MD · CSV · JSON · HTML</small><input id="convert-files" type="file" accept="image/*,.pdf,.txt,.md,.csv,.json,.html,.htm" multiple hidden></div>
+<div class="selected-files" id="selected-files" aria-live="polite"><span class="empty-files">No files selected yet</span></div>
+<div class="convert-settings"><div><label class="field-label" for="convert-format">Convert to</label><select id="convert-format" class="text-input"><option value="pdf">PDF document (.pdf)</option><option value="pptx">PowerPoint presentation (.pptx)</option><option value="png">PNG image (.png)</option><option value="jpeg">JPEG image (.jpg)</option></select></div><div><label class="field-label" for="convert-name">Output name</label><input id="convert-name" class="text-input" type="text" maxlength="80" value="converted-files" placeholder="converted-files"></div></div>
+<div class="converter-help" id="converter-help">Multiple files are combined into one PDF. PDFs are rendered page-by-page; images and text are added as pages.</div>
+<div class="converter-actions"><button class="btn outline" id="clear-convert-files" type="button">Clear files</button><button class="btn primary" id="convert-files-button" type="button" disabled>Convert & save <span>↗</span></button></div>
+<div class="conversion-progress" id="conversion-progress" aria-live="polite" hidden><span class="progress-spinner"></span><span id="conversion-status">Preparing your files…</span></div>
+<p class="status-message" id="pdf-status" role="status"></p><p class="tool-hint">Files are processed in your browser and are not uploaded. Very large files or unusual formats may need a dedicated converter.</p></article>
 <article class="tool-card notes-card" id="more-tools"><div class="tool-heading"><span class="tool-icon notes-icon">✎</span><div><h3>Quick notes</h3><p>A small space to capture thoughts.</p></div><span class="tool-index">03</span></div>
 <textarea id="notes-content" class="text-area notes-textarea" rows="6" maxlength="12000" placeholder="Write a reminder, idea, or to-do…"></textarea><div class="notes-footer"><span class="saved-state" id="notes-status" role="status">Saved on this device only</span><button class="btn outline" id="clear-notes" type="button">Clear notes</button></div><p class="tool-hint">Notes stay in this browser on this device. Avoid storing passwords or sensitive information here.</p></article>
 <article class="tool-card words-card" id="word-counter"><div class="tool-heading"><span class="tool-icon words-icon">Aa</span><div><h3>Word counter</h3><p>Check writing length as you type.</p></div><span class="tool-index">04</span></div>
