@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f0ff">
+  <meta name="description" content="Shyam's personal portfolio — a student learning to build useful things with Python, AI, and robotics.">
+  <title>Shyam — Student, Builder & Curious Learner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <nav class="nav shell" aria-label="Main navigation">
+      <a class="brand" href="#home" aria-label="Shyam home"><span class="brand-mark">S</span><span>shyam<span class="brand-dot">.</span></span></a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open navigation"><span></span><span></span></button>
+      <div class="nav-links" id="nav-links">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#learning">Learning</a>
+        <a class="nav-cta" href="#contact">Say hello <span aria-hidden="true">↗</span></a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero shell" id="home">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="status-dot"></span> STUDENT · BUILDER · LIFELONG LEARNER</p>
+        <h1>Curious mind.<br><span class="gradient-text">Useful ideas.</span><br>Built one step at a time.</h1>
+        <p class="hero-description">Hey, I'm Shyam. I'm a student exploring Python, AI, robotics, and how technology can solve real-world problems. This is my corner of the internet to learn out loud and share what I'm building.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#projects">Explore my work <span aria-hidden="true">↘</span></a>
+          <a class="text-link" href="#about">A little about me <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="hero-note"><span class="note-icon" aria-hidden="true">✦</span><span>Currently learning: Python, AI, and robotics foundations.</span></div>
+      </div>
+      <div class="hero-art" aria-label="Decorative illustration of connected ideas">
+        <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+        <div class="art-core"><span class="core-spark">✳</span><span>IDEAS<br>IN MOTION</span></div>
+        <div class="float-card card-code"><span class="float-icon">⌘</span><span><strong>Build</strong><small>Write · test · improve</small></span></div>
+        <div class="float-card card-ai"><span class="float-icon">✧</span><span><strong>Explore</strong><small>AI & robotics</small></span></div>
+        <div class="art-star star-one">✦</div><div class="art-star star-two">✧</div><div class="art-squiggle">〰</div>
+      </div>
+      <div class="hero-bottom"><span>BASED IN INDIA</span><span class="scroll-cue">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></span><span>ALWAYS IN PROGRESS ↗</span></div>
+    </section>
+
+    <section class="section about-section" id="about">
+      <div class="shell about-grid">
+        <div><p class="eyebrow">01 / A LITTLE ABOUT ME</p><h2>Learning today.<br><span class="muted-heading">Building for tomorrow.</span></h2></div>
+        <div class="about-copy"><p class="large-copy">I believe the best way to understand technology is to make something with it.</p><p>I'm early in my journey, so I focus on strong fundamentals, small experiments, and steady progress. I enjoy turning ideas into working prototypes, figuring out why things break, and learning how to make them better.</p><div class="values"><div><span>01</span><strong>Stay curious</strong></div><div><span>02</span><strong>Build with purpose</strong></div><div><span>03</span><strong>Improve every iteration</strong></div></div></div>
+      </div>
+    </section>
+
+    <section class="section projects-section" id="projects">
+      <div class="shell">
+        <div class="section-heading"><div><p class="eyebrow">02 / THINGS I'M EXPLORING</p><h2>Projects & <span class="gradient-text">experiments.</span></h2></div><p class="section-intro">A few ideas I'm developing or learning through. These are works in progress, and I'll add verified demos as they become ready.</p></div>
+        <div class="project-grid">
+          <article class="project-card project-featured"><div class="project-top"><span class="project-number">01</span><span class="project-tag">CONCEPT · IN PROGRESS</span></div><div class="project-visual visual-travel"><span class="visual-orb"></span><span class="visual-plane">✈</span><span class="visual-path"></span><span class="visual-label">ONE PLATFORM.<br>EVERY JOURNEY.</span></div><div class="project-content"><p class="project-category">AI · PRODUCT THINKING</p><h3>ALTRAV</h3><p>An idea for a smarter travel companion that brings trip planning, useful local information, and journey tools together.</p><div class="tag-list"><span>AI concepts</span><span>UX thinking</span><span>Travel tech</span></div></div></article>
+          <article class="project-card"><div class="project-top"><span class="project-number">02</span><span class="project-tag">LEARNING LAB</span></div><div class="project-visual visual-code"><span class="code-line"><i>01</i> def learn(topic):</span><span class="code-line indent"><i>02</i> &nbsp; practice(topic)</span><span class="code-line indent"><i>03</i> &nbsp; return progress</span><span class="code-stamp">PY<br>+</span></div><div class="project-content"><p class="project-category">PYTHON · PROBLEM SOLVING</p><h3>Python Lab</h3><p>Small programs and coding challenges to practise functions, loops, error handling, and writing clearer code.</p><div class="tag-list"><span>Python</span><span>Fundamentals</span><span>Practice</span></div></div></article>
+          <article class="project-card"><div class="project-top"><span class="project-number">03</span><span class="project-tag">ROADMAP</span></div><div class="project-visual visual-robot"><span class="robot-head"><i></i><i></i><b></b></span><span class="robot-body"></span><span class="robot-wheel wheel-left"></span><span class="robot-wheel wheel-right"></span><span class="robot-signal">∿</span></div><div class="project-content"><p class="project-category">AI · ROBOTICS</p><h3>Robot Builder Journey</h3><p>A step-by-step learning path through programming, sensors, electronics, computer vision, and autonomous robots.</p><div class="tag-list"><span>C++</span><span>Python</span><span>ROS 2 later</span></div></div></article>
+        </div>
+        <p class="honesty-note"><span aria-hidden="true">✦</span> I label concepts and learning projects honestly. No made-up client work, results, or credentials.</p>
+      </div>
+    </section>
+
+    <section class="section learning-section" id="learning">
+      <div class="shell learning-grid"><div><p class="eyebrow">03 / WHAT I'M LEARNING</p><h2>Small steps.<br><span class="muted-heading">Strong foundations.</span></h2><p class="learning-intro">I'm building my skills one concept and one project at a time.</p></div><div class="learning-list"><div class="learning-item"><span class="learning-icon">Py</span><div><h3>Python & problem solving</h3><p>Functions, loops, data structures, debugging, and clean code.</p></div><span class="learning-arrow">↗</span></div><div class="learning-item"><span class="learning-icon">AI</span><div><h3>Artificial intelligence</h3><p>Understanding models, useful applications, and responsible AI.</p></div><span class="learning-arrow">↗</span></div><div class="learning-item"><span class="learning-icon">Rx</span><div><h3>Robotics & electronics</h3><p>Learning how code, sensors, and real-world systems connect.</p></div><span class="learning-arrow">↗</span></div><div class="learning-item"><span class="learning-icon">↗</span><div><h3>Web development</h3><p>Creating accessible, responsive websites and improving them through testing.</p></div><span class="learning-arrow">↗</span></div></div></div>
+    </section>
+
+    <section class="contact-section" id="contact"><div class="shell contact-inner"><div><p class="eyebrow">04 / LET'S CONNECT</p><h2>Good ideas grow<br>when we <span class="gradient-text">share them.</span></h2><p>Have a useful resource, a project idea, or a learning tip? I'd be glad to hear about it.</p></div><a class="button button-light" href="https://github.com/mindsclub20" target="_blank" rel="noreferrer">Find me on GitHub <span aria-hidden="true">↗</span></a></div></section>
+  </main>
+  <footer class="site-footer"><div class="shell footer-inner"><a class="brand footer-brand" href="#home"><span class="brand-mark">S</span><span>shyam<span class="brand-dot">.</span></span></a><p>Made with curiosity, patience, and a little bit of code.</p><a href="#home" class="back-top">BACK TO TOP ↑</a><span class="copyright">© <span id="year"></span> SHYAM</span></div></footer>
+</body>
+</html>
