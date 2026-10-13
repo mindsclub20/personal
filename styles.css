@@ -113,3 +113,18 @@
 .image-studio-card .converter-actions{margin-top:12px}
 .image-studio-card .tool-heading{margin-bottom:12px}
 @media(max-width:650px){.image-studio-card .converter-actions{flex-direction:column-reverse}.image-studio-card .converter-actions .btn{width:100%}}
+
+
+/* Idea Spark Lab */
+.idea-icon{background:#e2f8ef;color:#248b69;font-size:24px}
+.idea-mission{margin-top:13px;padding:16px;border:1px solid #e9e0f8;border-radius:14px;background:linear-gradient(145deg,#fbf9ff,#f2edff)}
+.idea-kicker{font-size:9px;font-weight:700;letter-spacing:1.3px;color:#8062ce}
+.idea-mission h4{font:700 20px "Space Grotesk",sans-serif;letter-spacing:-.5px;color:#2a2140;margin:8px 0}
+.idea-mission>p{font-size:11px;line-height:1.7;color:#756b88;margin:0}
+.idea-meta{display:flex;flex-wrap:wrap;gap:7px;margin:13px 0}
+.idea-meta span{font-size:9px;font-weight:700;color:#66518f;background:#fff;border:1px solid #e7def7;border-radius:20px;padding:6px 9px}
+.idea-steps{display:grid;gap:9px;margin-top:12px}
+.idea-step{display:flex;align-items:flex-start;gap:9px;font-size:10px;line-height:1.6;color:#554b68}
+.idea-step>span:first-child{display:grid;place-items:center;width:21px;height:21px;flex-shrink:0;border-radius:7px;background:#e6ddfb;color:#6f4ed3;font-weight:700}
+.idea-lab-card .converter-actions{margin-top:13px}
+@media(max-width:650px){.idea-lab-card .converter-actions{flex-direction:column-reverse}.idea-lab-card .converter-actions .btn{width:100%}}
