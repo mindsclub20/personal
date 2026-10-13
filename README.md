@@ -4,7 +4,7 @@ A responsive, lavender-themed collection of useful browser tools.
 
 ## Features
 - Quick links to official ChatGPT, Google Gemini, and Claude websites (API integration is not enabled yet).
-- Calculator with parentheses and keyboard input, using a parser rather than JavaScript eval.
+- AI image studio prompt builder with style/aspect-ratio options; opens ChatGPT for generation (direct API integration is not enabled yet).\n- Calculator with parentheses and keyboard input, using a parser rather than JavaScript eval.
 - File converter for common image, PDF, and text files to PDF, PPTX, PNG, or JPEG. Multiple images can be combined into a PDF or PowerPoint; multiple image exports are bundled in a ZIP.
 - Quick notes saved locally in the current browser/device.
 - Live word/character count and estimated reading time.
@@ -36,3 +36,4 @@ This is a static site suitable for Vercel. No database or environment variables 
 - For privacy and reliability, current conversion is local-only and each input is limited to 25 MB (60 MB total selection). Some large PDFs may be slow.
 - This is not a universal conversion engine: DOCX/XLSX and other specialist formats need dedicated parsers or a secure server-side office conversion service. Do not upload sensitive documents to services you do not trust.
 - PDF-to-PDF / image-to-PDF output is rendered for visual fidelity, so text in converted pages may not be searchable or selectable.
+\n\n### AI image studio status\n- The page builds a detailed prompt and can copy it to the clipboard, then open ChatGPT for image generation.\n- It does not generate images directly inside this site yet. Direct generation requires a compatible image API and a secure server-side endpoint; never put an API key in `script.js`.\n- Prompts can be creatively flexible, but this is not designed to bypass provider safety controls.\n
