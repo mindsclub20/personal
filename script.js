@@ -84,13 +84,54 @@ timerStart?.addEventListener("click",()=>{if(timerId!==null){stopTimer();timerSt
 timerReset?.addEventListener("click",()=>{stopTimer();secondsLeft=25*60;showTimer();timerStart.textContent="Start focus";timerStatus.textContent="A 25-minute focus session. Pause when you need a break.";});showTimer();
 
 
-// AI image prompt studio. Actual generation currently happens in ChatGPT; no API key is stored here.
+// AI image studio: on-page text-to-image generation via Puter.js (no API key embedded).
 const imagePrompt=document.querySelector("#image-prompt"),imageStyle=document.querySelector("#image-style"),imageRatio=document.querySelector("#image-ratio"),imagePreview=document.querySelector("#image-prompt-preview"),imageStatus=document.querySelector("#image-studio-status");
 function buildImagePrompt(){const subject=(imagePrompt?.value||"").trim();if(!subject)return "";return subject+"\nVisual style: "+imageStyle.value+".\nComposition and aspect ratio: "+imageRatio.value+".\nCreate a polished, visually coherent image with thoughtful composition, clear focal point, rich details, and no accidental text or watermark unless requested.";}
 function updateImagePrompt(){const prompt=buildImagePrompt();if(imagePreview)imagePreview.textContent=prompt||"Your refined prompt will appear here.";}
 [imagePrompt,imageStyle,imageRatio].forEach(el=>el?.addEventListener("input",updateImagePrompt));
 document.querySelector("#copy-image-prompt")?.addEventListener("click",async()=>{const prompt=buildImagePrompt();if(!prompt){imageStatus.textContent="Describe the image first, then copy your prompt.";imagePrompt?.focus();return;}try{await navigator.clipboard.writeText(prompt);imageStatus.textContent="Prompt copied. Paste it into the image generator."; }catch(e){imagePreview.textContent=prompt;imageStatus.textContent="Clipboard access is unavailable; select and copy the prompt shown above."; }});
-document.querySelector("#open-image-generator")?.addEventListener("click",async()=>{const prompt=buildImagePrompt();if(!prompt){imageStatus.textContent="Describe the image first.";imagePrompt?.focus();return;}const tab=window.open("https://chatgpt.com/","_blank","noopener,noreferrer");try{await navigator.clipboard.writeText(prompt);imageStatus.textContent="Prompt copied. ChatGPT is opening in a new tab; paste it there to generate.";}catch(e){imageStatus.textContent="ChatGPT is opening. Copy the refined prompt shown above and paste it there.";imagePreview.textContent=prompt;}if(!tab)imageStatus.textContent="Your browser blocked the new tab. Allow pop-ups or use Copy prompt, then open ChatGPT.";});
+let latestGeneratedImage=null;
+const generateImageButton=document.querySelector("#generate-image");
+const generatedImagePanel=document.querySelector("#generated-image-panel");
+const generatedImageOutput=document.querySelector("#generated-image-output");
+const downloadGeneratedImageButton=document.querySelector("#download-generated-image");
+generateImageButton?.addEventListener("click",async()=>{
+ const prompt=buildImagePrompt();
+ if(!prompt){imageStatus.textContent="Describe the image first, then tap Generate image.";imagePrompt?.focus();return;}
+ if(!window.puter?.ai?.txt2img){imageStatus.textContent="The image service did not load. Check your internet connection and refresh the page.";return;}
+ generateImageButton.disabled=true;
+ generateImageButton.textContent="Generating…";
+ imageStatus.textContent="Generating your image. This can take a little while—keep this page open.";
+ if(generatedImagePanel)generatedImagePanel.hidden=true;
+ try{
+   const image=await window.puter.ai.txt2img(prompt,{model:"gpt-image-2",quality:"low"});
+   if(!image || !(image instanceof HTMLImageElement) || !image.src)throw new Error("The image service returned an unexpected result.");
+   image.alt=(imagePrompt.value.trim()||"AI-generated image").slice(0,250);
+   image.className="generated-image";
+   image.loading="eager";
+   generatedImageOutput.replaceChildren(image);
+   latestGeneratedImage=image;
+   generatedImagePanel.hidden=false;
+   imageStatus.textContent="Image generated successfully. Use Download image to save it.";
+   generatedImagePanel.scrollIntoView({behavior:"smooth",block:"nearest"});
+ }catch(error){
+   const message=String(error?.message||error||"Unknown error");
+   imageStatus.textContent=/auth|sign.?in|login/i.test(message)?"Puter may require you to sign in or authorize image generation. Follow any sign-in prompt, then try again.":/quota|limit|credit|payment|billing/i.test(message)?"The image provider reported a quota, credit, or billing limit. Check your Puter account/model access before trying again.":"Generation failed: "+message.slice(0,220);
+ }finally{
+   generateImageButton.disabled=false;
+   generateImageButton.textContent="Generate image ✨";
+ }
+});
+downloadGeneratedImageButton?.addEventListener("click",()=>{
+ if(!latestGeneratedImage?.src){imageStatus.textContent="Generate an image first.";return;}
+ const link=document.createElement("a");
+ link.href=latestGeneratedImage.src;
+ link.download="shyam-ai-image.png";
+ link.target="_blank";
+ link.rel="noopener";
+ document.body.appendChild(link);link.click();link.remove();
+ imageStatus.textContent="Download requested. If it opens the image instead, use your browser's image menu to save it.";
+});
 updateImagePrompt();
 
 
