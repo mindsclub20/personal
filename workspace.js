@@ -13,7 +13,7 @@ const app=document.createElement("div");app.className="ws-app";app.innerHTML=`
  </div><div class="ws-profile"><span class="ws-avatar">S</span><span><strong style="color:var(--ws-text);display:block">Personal workspace</strong><span>Local conversations</span></span></div>
 </aside>
 <section class="ws-main">
- <header class="ws-topbar"><div class="ws-top-left"><button class="ws-icon-btn ws-mobile-menu" id="ws-menu" aria-label="Open sidebar">☰</button><div class="ws-model">Workspace <small>Personal</small></div></div><div class="ws-top-actions"><button class="ws-icon-btn" id="ws-top-theme" title="Toggle light/dark theme" aria-label="Toggle theme">◐</button></div></header>
+ <header class="ws-topbar"><div class="ws-top-left"><button class="ws-icon-btn ws-mobile-menu" id="ws-menu" aria-label="Open sidebar">☰</button><div class="ws-model">Workspace <small>Gemini AI</small></div></div><div class="ws-top-actions"><button class="ws-icon-btn" id="ws-top-theme" title="Toggle light/dark theme" aria-label="Toggle theme">◐</button></div></header>
  <div class="ws-chat-scroll" id="ws-chat-scroll"><div class="ws-chat-inner" id="ws-chat-inner">
  <section class="ws-welcome" id="ws-welcome"><div class="ws-orb">✳</div><h1>What are we working on?</h1><p>Your personal AI-style workspace for learning, coding, creating, and getting things done.</p>
  <div class="ws-suggestions">
@@ -23,12 +23,12 @@ const app=document.createElement("div");app.className="ws-app";app.innerHTML=`
  <button class="ws-suggestion" data-view="tools"><span class="ws-s-icon">▦</span><span><strong>Open my toolbox</strong><small>Calculator, Python, files, notes, and more</small></span></button>
  </div></section><div class="ws-messages" id="ws-messages"></div></div></div>
  <section class="ws-tool-view" id="ws-tool-view"><div class="ws-tool-head"><div><h2>Your tools</h2><p>Utilities from your existing toolbox, kept in this workspace.</p></div><button class="ws-back-chat" id="ws-back-chat">← Back to chat</button></div><div class="ws-tool-grid" id="ws-tool-grid"></div></section>
- <footer class="ws-composer-wrap" id="ws-composer-wrap"><form class="ws-composer-box" id="ws-form"><textarea class="ws-composer" id="ws-composer" rows="1" maxlength="8000" placeholder="Message your workspace…" aria-label="Write a message"></textarea><div class="ws-composer-tools"><div class="ws-composer-left"><button class="ws-composer-tool" type="button" id="ws-add-tool">＋ Tools</button><button class="ws-composer-tool" type="button" id="ws-focus-prompt">✧ Help me focus</button></div><div class="ws-composer-right"><span style="font-size:10px;color:var(--ws-muted);padding-right:5px">Enter to send</span><button class="ws-send" id="ws-send" type="submit" aria-label="Send message" disabled>↑</button></div></div></form><p class="ws-disclaimer">AI replies are not connected yet. This workspace UI is ready for a secure server-side AI integration; no API key is embedded in the page.</p></footer>
+ <footer class="ws-composer-wrap" id="ws-composer-wrap"><form class="ws-composer-box" id="ws-form"><textarea class="ws-composer" id="ws-composer" rows="1" maxlength="8000" placeholder="Message Gemini…" aria-label="Write a message"></textarea><div class="ws-composer-tools"><div class="ws-composer-left"><button class="ws-composer-tool" type="button" id="ws-add-tool">＋ Tools</button><button class="ws-composer-tool" type="button" id="ws-focus-prompt">✧ Help me focus</button></div><div class="ws-composer-right"><span style="font-size:10px;color:var(--ws-muted);padding-right:5px">Enter to send</span><button class="ws-send" id="ws-send" type="submit" aria-label="Send message" disabled>↑</button></div></div></form><p class="ws-disclaimer">Powered by Gemini. Your API key stays on the server and is never sent to your browser.</p></footer>
 </section></div>`;
 document.body.append(app);
 const originalTools=$(".tools-layout");
 if(originalTools){$("#ws-tool-grid").append(originalTools);originalTools.className="ws-tool-grid";originalTools.querySelectorAll(".tool-card").forEach(c=>c.hidden=false);}
-const themeKey="shyam-ws-theme",historyKey="shyam-ws-conversations";let currentId=null,conversations=[];
+const themeKey="shyam-ws-theme",historyKey="shyam-ws-conversations";let currentId=null,conversations=[],busy=false;
 try{conversations=JSON.parse(localStorage.getItem(historyKey)||"[]");if(!Array.isArray(conversations))conversations=[];}catch{conversations=[]}
 try{if(localStorage.getItem(themeKey)==="dark")document.body.classList.add("ws-dark");}catch{}
 const persist=()=>{try{localStorage.setItem(historyKey,JSON.stringify(conversations.slice(0,30)))}catch{}};
@@ -40,25 +40,8 @@ function openChat(id){currentId=id;renderHistory();renderMessages();showView("ch
 function newChat(){currentId=null;renderHistory();renderMessages();$("#ws-composer").value="";$("#ws-composer").focus();showView("chat")}
 function addMessage(role,text){let c=active();if(!c){c={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),title:text.slice(0,44)+(text.length>44?"…":""),messages:[],updated:Date.now()};conversations.unshift(c);currentId=c.id}c.messages.push({role,text});c.updated=Date.now();conversations.sort((a,b)=>b.updated-a.updated);persist();renderHistory();renderMessages()}
 function showView(view){const isTools=view==="tools";$("#ws-tool-view").classList.toggle("open",isTools);$("#ws-chat-scroll").style.display=isTools?"none":"block";$("#ws-composer-wrap").style.display=isTools?"none":"block";$$("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===view));app.classList.remove("sidebar-open")}
-async function sendMessage(text){
- const v=(text||"").trim();if(!v)return;
- const composer=$("#ws-composer"),send=$("#ws-send");
- composer.value="";resizeComposer();send.disabled=true;
- addMessage("user",v);addMessage("assistant","Thinking…");
- const c=active(),placeholder=c?.messages[c.messages.length-1];
- try{
-  const history=(c?.messages||[]).slice(0,-2).slice(-20).map(m=>({role:m.role==="assistant"?"model":"user",text:m.text}));
-  const response=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:v,history})});
-  const data=await response.json().catch(()=>({}));
-  if(!response.ok)throw new Error(data.error||("AI request failed ("+response.status+")."));
-  if(!data.reply)throw new Error("The AI returned an empty reply. Please try again.");
-  if(placeholder)placeholder.text=data.reply;
- }catch(error){
-  if(placeholder)placeholder.text="Couldn't get an AI reply: "+(error.message||"Please try again.");
- }
- persist();renderMessages();send.disabled=!composer.value.trim();
-}
-function resizeComposer(){const el=$("#ws-composer");el.style.height="auto";el.style.height=Math.min(el.scrollHeight,160)+"px";$("#ws-send").disabled=!el.value.trim()}
+async async function sendMessage(text){const v=(text||"").trim();if(!v||busy)return;$("#ws-composer").value="";resizeComposer();busy=true;$("#ws-send").disabled=true;const chatId=(active()||{}).id;addMessage("user",v);const c=active();addMessage("assistant","Thinking…");const history=c.messages.slice(0,-1).filter(m=>m.text!=="Thinking…").slice(-12).map(m=>({role:m.role==="assistant"?"model":"user",text:m.text}));try{const response=await fetch("/api/ai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:v,history})});let data={};try{data=await response.json()}catch{}if(!response.ok)throw new Error(data.error||"AI request failed ("+response.status+").");const target=conversations.find(x=>x.id===chatId)||active();if(target){const pending=[...target.messages].reverse().find(m=>m.text==="Thinking…");if(pending)pending.text=data.text||"I couldn't produce a response. Please try again.";target.updated=Date.now();persist();renderHistory();renderMessages()}}catch(err){const target=conversations.find(x=>x.id===chatId)||active();if(target){const pending=[...target.messages].reverse().find(m=>m.text==="Thinking…");if(pending)pending.text="I couldn't connect to Gemini. "+(err.message||"Please try again.")+" Check that GEMINI_API_KEY is set for Production in Vercel, then redeploy.";persist();renderMessages()}}finally{busy=false;resizeComposer()}}
+function resizeComposer(){const el=$("#ws-composer");el.style.height="auto";el.style.height=Math.min(el.scrollHeight,160)+"px";$("#ws-send").disabled=busy||!el.value.trim()}
 $("#ws-form").addEventListener("submit",e=>{e.preventDefault();sendMessage($("#ws-composer").value)});
 $("#ws-composer").addEventListener("input",resizeComposer);$("#ws-composer").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage($("#ws-composer").value)}});
 $("#ws-new").addEventListener("click",newChat);$("#ws-menu").addEventListener("click",()=>app.classList.toggle("sidebar-open"));
