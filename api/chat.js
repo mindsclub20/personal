@@ -69,11 +69,11 @@ export default async function handler(req, res) {
     if (totalAttachmentBytes > MAX_TOTAL_FILE_BYTES) {
       return send(res, 413, { error: "The combined attachment size must be 3 MB or smaller." });
     }
-    const safeName = file.name.replace(/[\\r\\n]/g, " ").slice(0, 180);
+    const safeName = file.name.replace(/[\\r\n]/g, " ").slice(0, 180);
     const mimeType = typeof file.mimeType === "string" ? file.mimeType.toLowerCase() : "";
     if (typeof file.text === "string") {
       if (file.text.length > MAX_FILE_BYTES) return send(res, 413, { error: "A text attachment is too large to process." });
-      preparedParts.push({ text: "\\n\\n--- File: " + safeName + " ---\\n" + file.text + "\\n--- End file ---\\n" });
+      preparedParts.push({ text: "\n\n--- File: " + safeName + " ---\n" + file.text + "\n--- End file ---\n" });
     } else if (typeof file.dataBase64 === "string" && allowedInlineTypes.has(mimeType)) {
       if (file.dataBase64.length > Math.ceil(MAX_FILE_BYTES * 4 / 3) + 16 || !/^[A-Za-z0-9+/]*={0,2}$/.test(file.dataBase64)) {
         return send(res, 400, { error: "The contents of " + safeName + " are not valid base64 data." });
