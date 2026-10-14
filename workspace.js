@@ -47,7 +47,7 @@ async function sendMessage(text){
  addMessage("user",v);addMessage("assistant","Thinking…");
  const c=active(),placeholder=c?.messages[c.messages.length-1];
  try{
-  const history=(c?.messages||[]).slice(0,-1).slice(-20).map(m=>({role:m.role==="assistant"?"model":"user",text:m.text}));
+  const history=(c?.messages||[]).slice(0,-2).slice(-20).map(m=>({role:m.role==="assistant"?"model":"user",text:m.text}));
   const response=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:v,history})});
   const data=await response.json().catch(()=>({}));
   if(!response.ok)throw new Error(data.error||("AI request failed ("+response.status+")."));
