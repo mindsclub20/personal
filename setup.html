@@ -27,8 +27,12 @@ a{color:#6b49cf;font-weight:700}.back{display:inline-block;margin-top:12px;font-
 <form id="setup" autocomplete="on">
 <label for="username">Username</label><input id="username" name="username" autocomplete="username" required maxlength="80" value="shyamsundar">
 <label for="password">Primary password</label><input id="password" name="password" type="password" autocomplete="new-password" required minlength="16">
+<label for="confirmPassword">Confirm primary password</label><input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" required minlength="16">
 <label for="detail1">Secondary password</label><input id="detail1" name="detail1" type="password" autocomplete="new-password" required minlength="12">
+<label for="confirmDetail1">Confirm secondary password</label><input id="confirmDetail1" name="confirmDetail1" type="password" autocomplete="new-password" required minlength="12">
 <label for="detail2">Tertiary password</label><input id="detail2" name="detail2" type="password" autocomplete="new-password" required minlength="12">
+<label for="confirmDetail2">Confirm tertiary password</label><input id="confirmDetail2" name="confirmDetail2" type="password" autocomplete="new-password" required minlength="12">
+<label class="toggle"><input id="showPasswords" type="checkbox"> Show passwords</label>
 <details class="auth-note"><summary><strong>One-time setup authorization</strong></summary><p>Enter the setup token configured privately in Vercel. This prevents someone else from claiming the account first.</p><label for="setupToken">Setup token</label><input id="setupToken" name="setupToken" type="password" autocomplete="off" required minlength="24"></details>
 <button id="submit" type="submit">Save credentials securely <span aria-hidden="true">↗</span></button><div class="status" id="status" role="status" aria-live="polite"></div>
 </form>
@@ -37,5 +41,21 @@ a{color:#6b49cf;font-weight:700}.back{display:inline-block;margin-top:12px;font-
 </main>
 <script>
 const form=document.querySelector("#setup"),status=document.querySelector("#status"),button=document.querySelector("#submit");
-document.querySelector("#showPasswords").addEventListener("change",e=>{form.querySelectorAll('input[type="password"]').forEach(input=>input.type=e.target.checked?"text":"password");});\nform.addEventListener("submit",async e=>{e.preventDefault();const values=Object.fromEntries(new FormData(form).entries());if(values.password!==values.confirmPassword||values.detail1!==values.confirmDetail1||values.detail2!==values.confirmDetail2){status.textContent="The confirmation fields do not match.";return;}delete values.confirmPassword;delete values.confirmDetail1;delete values.confirmDetail2;if(values.detail1===values.detail2||values.password===values.detail1||values.password===values.detail2){status.textContent="Use three different secrets.";return;}button.disabled=true;status.style.color="#6b627c";status.textContent="Saving credentials securely…";try{const r=await fetch("/api/auth/setup",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(values)});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||"Could not complete setup.");form.reset();status.style.color="#16734a";status.textContent=d.message||"Setup complete. You can now sign in.";setTimeout(()=>location.replace("/login.html"),1200);}catch(err){status.style.color="#9b2637";status.textContent=err.message||"Could not complete setup.";}finally{button.disabled=false;}});
+document.querySelector("#showPasswords").addEventListener("change",e=>{form.querySelectorAll('input[type="password"],input[type="text"]').forEach(input=>{if(input.id!=="username")input.type=e.target.checked?"text":"password";});});
+form.addEventListener("submit",async e=>{
+  e.preventDefault();
+  const values=Object.fromEntries(new FormData(form).entries());
+  if(values.password!==values.confirmPassword||values.detail1!==values.confirmDetail1||values.detail2!==values.confirmDetail2){status.textContent="The confirmation fields do not match.";return;}
+  delete values.confirmPassword;delete values.confirmDetail1;delete values.confirmDetail2;
+  if(values.detail1===values.detail2||values.password===values.detail1||values.password===values.detail2){status.textContent="Use three different secrets.";return;}
+  button.disabled=true;status.style.color="#6b627c";status.textContent="Saving credentials securely…";
+  try{
+    const r=await fetch("/api/auth/setup",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(values)});
+    const d=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error(d.error||"Could not complete setup.");
+    form.reset();status.style.color="#16734a";status.textContent=d.message||"Setup complete. You can now sign in.";
+    setTimeout(()=>location.replace("/login.html"),1200);
+  }catch(err){status.style.color="#9b2637";status.textContent=err.message||"Could not complete setup.";}
+  finally{button.disabled=false;}
+});
 </script></body></html>
