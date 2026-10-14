@@ -33,3 +33,14 @@ test("PDF export uses a printable document and escapes user text", () => {
   assert.match(js, /escapeHtml/);
   assert.match(js, /\.print\(/);
 });
+
+test("internet checker is discoverable from the toolbox and has a 100-site directory", () => {
+  const page = fs.readFileSync(path.join(root, "internet-checker.html"), "utf8");
+  assert.match(html, /href="internet-checker\.html"/);
+  assert.match(page, /id="run-speed-test"/);
+  assert.match(page, /id="website-list"/);
+  assert.match(page, /data-sites-count="100"/);
+  assert.match(page, /speed.cloudflare.com/);
+  assert.match(page, /estimated|estimate/i);
+  assert.match(page, /not.*guarantee|not a live check|not live/i);
+});
