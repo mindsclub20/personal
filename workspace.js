@@ -40,7 +40,24 @@ function openChat(id){currentId=id;renderHistory();renderMessages();showView("ch
 function newChat(){currentId=null;renderHistory();renderMessages();$("#ws-composer").value="";$("#ws-composer").focus();showView("chat")}
 function addMessage(role,text){let c=active();if(!c){c={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),title:text.slice(0,44)+(text.length>44?"…":""),messages:[],updated:Date.now()};conversations.unshift(c);currentId=c.id}c.messages.push({role,text});c.updated=Date.now();conversations.sort((a,b)=>b.updated-a.updated);persist();renderHistory();renderMessages()}
 function showView(view){const isTools=view==="tools";$("#ws-tool-view").classList.toggle("open",isTools);$("#ws-chat-scroll").style.display=isTools?"none":"block";$("#ws-composer-wrap").style.display=isTools?"none":"block";$$("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===view));app.classList.remove("sidebar-open")}
-function sendMessage(text){const v=(text||"").trim();if(!v)return;$("#ws-composer").value="";resizeComposer();addMessage("user",v);addMessage("assistant","This workspace is currently in interface-only mode, so it hasn't sent your message to an AI model. Your message is saved locally in this browser. To enable real AI replies, connect a provider through a secure server-side endpoint and keep its API key in Vercel environment variables—not in frontend code.");}
+async function sendMessage(text){
+ const v=(text||"").trim();if(!v)return;
+ const composer=$("#ws-composer"),send=$("#ws-send");
+ composer.value="";resizeComposer();send.disabled=true;
+ addMessage("user",v);addMessage("assistant","Thinking…");
+ const c=active(),placeholder=c?.messages[c.messages.length-1];
+ try{
+  const history=(c?.messages||[]).slice(0,-1).slice(-20).map(m=>({role:m.role==="assistant"?"model":"user",text:m.text}));
+  const response=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:v,history})});
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(data.error||("AI request failed ("+response.status+")."));
+  if(!data.reply)throw new Error("The AI returned an empty reply. Please try again.");
+  if(placeholder)placeholder.text=data.reply;
+ }catch(error){
+  if(placeholder)placeholder.text="Couldn't get an AI reply: "+(error.message||"Please try again.");
+ }
+ persist();renderMessages();send.disabled=!composer.value.trim();
+}
 function resizeComposer(){const el=$("#ws-composer");el.style.height="auto";el.style.height=Math.min(el.scrollHeight,160)+"px";$("#ws-send").disabled=!el.value.trim()}
 $("#ws-form").addEventListener("submit",e=>{e.preventDefault();sendMessage($("#ws-composer").value)});
 $("#ws-composer").addEventListener("input",resizeComposer);$("#ws-composer").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage($("#ws-composer").value)}});
