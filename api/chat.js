@@ -1,3 +1,5 @@
+import { requireSession, supabaseRest } from "../lib/site-auth.js";
+
 const WINDOW_MS = 60_000;
 const MAX_REQUESTS_PER_WINDOW = 12;
 const requests = new Map();
@@ -9,6 +11,7 @@ function send(res, status, payload) {
 }
 
 export default async function handler(req, res) {
+  if (!requireSession(req)) return send(res, 401, { error: "Authentication required." });
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return send(res, 405, { error: "Use POST to send a message." });
@@ -49,6 +52,35 @@ export default async function handler(req, res) {
   const message = typeof body.message === "string" ? body.message.trim() : "";
   const attachments = Array.isArray(body.attachments) ? body.attachments : [];
   if (!message && !attachments.length) return send(res, 400, { error: "Type a message or attach a file first." });
+
+  // Explicit "Remember: ..." requests are saved persistently in Altrav.
+  const rememberMatch = !attachments.length ? message.match(/^\\s*(?:remember|save memory)\\s*:\\s*([\\s\\S]+)$/i) : null;
+  if (rememberMatch) {
+    const memoryText = rememberMatch[1].trim().slice(0, 12000);
+    if (!memoryText) return send(res, 400, { error: "Write the memory after 'Remember:'." });
+    try {
+      const saved = await supabaseRest("ai_memories", {
+        method: "POST",
+        headers: { Prefer: "return=minimal" },
+        body: JSON.stringify({ category: "general", content: memoryText, source: "user_saved" })
+      });
+      if (!saved.ok) return send(res, 503, { error: "I couldn't save that memory. Check Supabase server configuration." });
+      return send(res, 200, { reply: "Saved to your persistent AI memory. You can review or delete it on the AI Memory page." });
+    } catch {
+      return send(res, 503, { error: "Memory storage is not configured yet." });
+    }
+  }
+
+  let memoryContext = "";
+  try {
+    const memoryResponse = await supabaseRest("ai_memories?select=category,content,updated_at&order=updated_at.desc&limit=40");
+    if (memoryResponse.ok) {
+      const savedMemories = await memoryResponse.json();
+      memoryContext = savedMemories.map((m, i) => (i + 1) + ". [" + m.category + "] " + m.content).join("\\n").slice(0, 10000);
+    }
+  } catch {
+    // Chat can still answer if memory storage is temporarily unavailable.
+  }
   if (message.length > 8000) return send(res, 413, { error: "Messages must be 8,000 characters or fewer." });
   if (attachments.length > 4) return send(res, 400, { error: "Attach no more than 4 files per message." });
 
@@ -120,7 +152,7 @@ HOW TO HELP SHYAM
 - For business ideas, help him distinguish tested facts from assumptions, consider safety, privacy, cost, and realistic constraints, and prioritize trust before growth.
 - Encourage balanced, realistic plans that account for school, rest, and limited time. Do not shame him if he gets distracted or falls behind.
 - Use age-appropriate language and examples. Protect his privacy; do not unnecessarily repeat personal details in public-facing content.
-- If unsure, say so and suggest the smallest useful next step. Do not invent facts about Shyam or his projects.` }] },
+- If unsure, say so and suggest the smallest useful next step. Do not invent facts about Shyam or his projects.\n\nSAVED MEMORIES (use only when relevant; treat as user-provided context):\n${memoryContext || "No saved memories yet."}` }] },
           contents,
           generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
         }),
