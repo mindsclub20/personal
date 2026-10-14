@@ -47,8 +47,42 @@ export default async function handler(req, res) {
   if (!body || typeof body !== "object") return send(res, 400, { error: "Invalid request body." });
 
   const message = typeof body.message === "string" ? body.message.trim() : "";
-  if (!message) return send(res, 400, { error: "Please type a message first." });
+  const attachments = Array.isArray(body.attachments) ? body.attachments : [];
+  if (!message && !attachments.length) return send(res, 400, { error: "Type a message or attach a file first." });
   if (message.length > 8000) return send(res, 413, { error: "Messages must be 8,000 characters or fewer." });
+  if (attachments.length > 4) return send(res, 400, { error: "Attach no more than 4 files per message." });
+
+  const MAX_FILE_BYTES = 2 * 1024 * 1024;
+  const MAX_TOTAL_FILE_BYTES = 3 * 1024 * 1024;
+  const allowedInlineTypes = new Set(["application/pdf", "image/png", "image/jpeg", "image/webp"]);
+  const preparedParts = [];
+  let totalAttachmentBytes = 0;
+  for (const file of attachments) {
+    if (!file || typeof file !== "object" || typeof file.name !== "string" || file.name.length > 180) {
+      return send(res, 400, { error: "One of the attachments has invalid file details." });
+    }
+    const size = Number(file.size);
+    if (!Number.isSafeInteger(size) || size < 0 || size > MAX_FILE_BYTES) {
+      return send(res, 413, { error: "Each attachment must be 2 MB or smaller." });
+    }
+    totalAttachmentBytes += size;
+    if (totalAttachmentBytes > MAX_TOTAL_FILE_BYTES) {
+      return send(res, 413, { error: "The combined attachment size must be 3 MB or smaller." });
+    }
+    const safeName = file.name.replace(/[\\r\\n]/g, " ").slice(0, 180);
+    const mimeType = typeof file.mimeType === "string" ? file.mimeType.toLowerCase() : "";
+    if (typeof file.text === "string") {
+      if (file.text.length > MAX_FILE_BYTES) return send(res, 413, { error: "A text attachment is too large to process." });
+      preparedParts.push({ text: "\\n\\n--- File: " + safeName + " ---\\n" + file.text + "\\n--- End file ---\\n" });
+    } else if (typeof file.dataBase64 === "string" && allowedInlineTypes.has(mimeType)) {
+      if (file.dataBase64.length > Math.ceil(MAX_FILE_BYTES * 4 / 3) + 16 || !/^[A-Za-z0-9+/]*={0,2}$/.test(file.dataBase64)) {
+        return send(res, 400, { error: "The contents of " + safeName + " are not valid base64 data." });
+      }
+      preparedParts.push({ inline_data: { mime_type: mimeType, data: file.dataBase64 } });
+    } else {
+      return send(res, 400, { error: "Unsupported attachment type for " + safeName + ". Use PDF, PNG, JPG, WEBP, or text/code files." });
+    }
+  }
 
   const history = Array.isArray(body.history) ? body.history.slice(-20) : [];
   const contents = [];
@@ -57,7 +91,8 @@ export default async function handler(req, res) {
     const text = item.text.trim().slice(0, 8000);
     if (text) contents.push({ role: item.role, parts: [{ text }] });
   }
-  contents.push({ role: "user", parts: [{ text: message }] });
+  const userParts = [{ text: message || "Please inspect the attached file(s) and explain their contents." }, ...preparedParts];
+  contents.push({ role: "user", parts: userParts });
 
   try {
     const models = ["gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash-lite"];
