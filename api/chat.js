@@ -60,31 +60,47 @@ export default async function handler(req, res) {
   contents.push({ role: "user", parts: [{ text: message }] });
 
   try {
-    const upstream = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: "You are Shyam's helpful personal AI assistant. Give clear, practical, age-appropriate answers. For coding help, explain errors accurately and provide safe examples. If uncertain, say so." }] },
-        contents,
-        generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
-      }),
-      signal: AbortSignal.timeout(25_000)
-    });
-    const result = await upstream.json().catch(() => ({}));
-    if (!upstream.ok) {
-      const message = result?.error?.message || "The Gemini service rejected the request.";
+    const models = ["gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash-lite"];
+    let lastStatus = 503;
+    let lastMessage = "Gemini is temporarily busy.";
+    for (const model of models) {
+      const upstream = await fetch("https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: "You are Shyam's helpful personal AI assistant. Give clear, practical, age-appropriate answers. For coding help, explain errors accurately and provide safe examples. If uncertain, say so." }] },
+          contents,
+          generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
+        }),
+        signal: AbortSignal.timeout(25_000)
+      });
+      const result = await upstream.json().catch(() => ({}));
+      if (upstream.ok) {
+        const reply = (result?.candidates?.[0]?.content?.parts || []).map(part => part.text || "").join("").trim();
+        if (!reply) return send(res, 502, { error: "Gemini returned no text. Please try a different message." });
+        return send(res, 200, { reply });
+      }
+
+      lastStatus = upstream.status;
+      lastMessage = result?.error?.message || "Gemini could not complete the request.";
+      // A busy or unavailable model can be retried using the next supported model.
+      if (upstream.status === 503 || upstream.status === 404) continue;
       if (upstream.status === 401 || upstream.status === 403) {
         return send(res, 502, { error: "Gemini rejected the API key. Check that GEMINI_API_KEY is correct and enabled for the Gemini API in Google AI Studio." });
       }
       if (upstream.status === 429) {
         return send(res, 429, { error: "Gemini's usage limit was reached. Please wait and try again." });
       }
-      console.error("Gemini upstream error:", upstream.status, message.slice(0, 300));
+      console.error("Gemini upstream error:", upstream.status, lastMessage.slice(0, 300));
       return send(res, 502, { error: "Gemini could not answer right now. Please try again shortly." });
     }
-    const reply = (result?.candidates?.[0]?.content?.parts || []).map(part => part.text || "").join("").trim();
-    if (!reply) return send(res, 502, { error: "Gemini returned no text. Please try a different message." });
-    return send(res, 200, { reply });
+
+    console.error("Gemini models unavailable:", lastStatus, lastMessage.slice(0, 300));
+    if (lastStatus === 503) {
+      return send(res, 503, { error: "Gemini is temporarily busy across its available models. Please try again in a minute." });
+    }
+    return send(res, 502, { error: "Gemini could not answer right now. Please try again shortly." });
+
   } catch (error) {
     console.error("Gemini request failed:", error?.name || "Error");
     return send(res, 504, { error: "The AI request timed out or the service is unavailable. Please try again." });
