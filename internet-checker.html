@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f0ff"><meta name="description" content="Test internet download speed, upload speed and latency, then estimate which of 100 popular websites and online activities should work comfortably."><title>Internet Speed & Website Checker — Shyam's Toolbox</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"><style>
+:root{--ink:#241d37;--muted:#797187;--purple:#7555dc;--line:#e9e3f2;--pale:#faf8ff;font-family:"DM Sans",sans-serif;color:var(--ink)}*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#faf7ff,#fff 480px);font-size:14px;line-height:1.6}.shell{width:min(1060px,calc(100% - 32px));margin:auto}a{color:inherit;text-decoration:none}button,input,select{font:inherit}.top{padding:18px 0;border-bottom:1px solid var(--line);background:#ffffffdf}.top-inner{display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font:700 18px "Space Grotesk",sans-serif}.brand span{color:var(--purple)}.back{color:var(--purple);font-weight:700}.hero{padding:36px 0 18px}.eyebrow{color:var(--purple);font-size:10px;letter-spacing:1.7px;font-weight:700}.hero h1{font:700 clamp(30px,5vw,48px)/1.12 "Space Grotesk",sans-serif;letter-spacing:-1.5px;margin:10px 0}.hero p{color:var(--muted);max-width:720px}.panel{background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 12px 36px #3723640d;margin:18px 0}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.metric{background:var(--pale);border:1px solid #eee6ff;border-radius:16px;padding:16px;min-width:0}.metric small{display:block;color:var(--muted);font-weight:700;letter-spacing:.8px;font-size:10px}.metric strong{font:700 clamp(24px,4vw,36px) "Space Grotesk",sans-serif;display:block;margin-top:5px;overflow-wrap:anywhere}.unit{color:var(--muted);font-size:12px}.btn{border:0;border-radius:12px;padding:13px 18px;background:var(--purple);color:#fff;font-weight:700;cursor:pointer;margin:15px 0 5px}.btn:disabled{opacity:.6;cursor:wait}.status{min-height:25px;color:var(--muted)}.notice{background:#f7f3ff;border:1px solid #e7dcff;border-radius:12px;padding:12px 14px;color:#5d5078;font-size:12px}.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}.summary-card{border:1px solid var(--line);border-radius:15px;padding:15px}.summary-card strong{display:block;font:700 25px "Space Grotesk",sans-serif}.summary-card small{color:var(--muted)}.bar{height:8px;border-radius:10px;background:#eee9f7;overflow:hidden;margin-top:10px}.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,#7555dc,#b366cb);transition:width .3s}.filters{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.filters input,.filters select{padding:11px 13px;border:1px solid #ded3f4;border-radius:11px;background:white;color:var(--ink)}.filters input{flex:1;min-width:180px}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:610px}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid #f0ecf6}th{font-size:10px;color:var(--muted);letter-spacing:.8px}td a{color:var(--purple);font-weight:700}td a:hover{text-decoration:underline}.pill{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700}.good{background:#e5f8ee;color:#147648}.maybe{background:#fff3d9;color:#8a5b00}.poor{background:#ffebec;color:#a82d3b}.muted{color:var(--muted)}.footer{padding:22px 0;color:var(--muted);font-size:12px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(max-width:620px){.metrics,.summary-grid{grid-template-columns:1fr}.panel{padding:16px}.top-inner{align-items:flex-start}.hero{padding-top:24px}}
+</style></head><body>
+<header class="top"><div class="shell top-inner"><a class="brand" href="index.html">shyam<span>.</span> toolbox</a><a class="back" href="index.html">← All tools</a></div></header>
+<main class="shell"><section class="hero"><div class="eyebrow">NETWORK DIAGNOSTICS</div><h1>Internet speed &<br><span style="color:var(--purple)">website checker.</span></h1><p>Measure your connection, then see which types of online activities are likely to work smoothly. Browse a directory of 100 popular websites and filter it using your measured speed.</p></section>
+<section class="panel" aria-labelledby="speed-title"><h2 id="speed-title" style="font:700 22px 'Space Grotesk',sans-serif;margin-top:0">Your connection</h2><div class="metrics"><div class="metric"><small>DOWNLOAD</small><strong id="download-value">—</strong><span class="unit">Mbps</span></div><div class="metric"><small>UPLOAD</small><strong id="upload-value">—</strong><span class="unit">Mbps</span></div><div class="metric"><small>LATENCY / PING</small><strong id="ping-value">—</strong><span class="unit">ms</span></div></div><button class="btn" id="run-speed-test" type="button">▶ Start internet speed test</button><div class="status" id="test-status" role="status" aria-live="polite">Ready. Tap to test your current connection.</div><div class="notice">This browser test uses Cloudflare's public speed-test endpoint and transfers up to about 6 MB down plus 0.5 MB up. Results vary with Wi-Fi/mobile signal, server load, and other network use. If the test endpoint is blocked, some measurements may be unavailable.</div></section>
+<section class="panel" aria-labelledby="estimate-title"><h2 id="estimate-title" style="font:700 22px 'Space Grotesk',sans-serif;margin-top:0">What can your connection handle?</h2><p class="muted">These are estimates based on measured download speed—not a guarantee that a site is online, unblocked, supported by your device, or available in your country.</p><div class="summary-grid"><div class="summary-card"><small>LIKELY COMFORTABLE</small><strong id="likely-count">— / 100</strong><small>Sites with estimated bandwidth needs met</small><div class="bar"><span id="likely-bar"></span></div></div><div class="summary-card"><small>CONNECTION PROFILE</small><strong id="profile">Not tested</strong><small id="profile-desc">Run the speed test first.</small></div><div class="summary-card"><small>SIMULTANEOUS TABS</small><strong id="tabs-count">—</strong><small id="tabs-desc">Rough browsing guidance, not a hard limit</small></div></div><div id="activity-guidance" class="notice" style="margin-top:14px">Run the test to get suggestions for text browsing, social media, video calls, HD streaming, and 4K streaming.</div></section>
+<section class="panel" aria-labelledby="list-title"><h2 id="list-title" style="font:700 22px 'Space Grotesk',sans-serif;margin-top:0">100 website compatibility estimates</h2><p class="muted">“Likely” means the estimated bandwidth threshold is met. “May struggle” means the connection is below that estimate. Websites are not ping-tested individually.</p><div class="filters"><label class="sr-only" for="site-search">Search websites</label><input id="site-search" type="search" placeholder="Search by website or category…"><label class="sr-only" for="site-filter">Filter results</label><select id="site-filter"><option value="all">All 100 websites</option><option value="likely">Likely compatible</option><option value="struggle">May struggle</option><option value="video">Video & streaming</option><option value="learning">Learning & development</option></select></div><p id="list-count" class="muted" aria-live="polite">Showing 100 websites</p><div class="table-wrap"><table><thead><tr><th>WEBSITE</th><th>CATEGORY</th><th>EST. SPEED NEEDED</th><th>ESTIMATE</th></tr></thead><tbody id="website-list"></tbody></table></div></section>
+</main><footer class="footer shell">Shyam's Toolbox · Estimates only. A speed test cannot determine the total number of websites the internet connection can access.</footer>
+<script>
+const sites = [
+      {name:"Google Search",url:"https://www.google.com",category:"Search",need:0.5},
+      {name:"Bing",url:"https://www.bing.com",category:"Search",need:0.5},
+      {name:"DuckDuckGo",url:"https://duckduckgo.com",category:"Search",need:0.5},
+      {name:"Yahoo",url:"https://www.yahoo.com",category:"Search",need:1},
+      {name:"Wikipedia",url:"https://www.wikipedia.org",category:"Learning",need:0.5},
+      {name:"Google Maps",url:"https://maps.google.com",category:"Maps",need:2},
+      {name:"Google Translate",url:"https://translate.google.com",category:"Learning",need:1},
+      {name:"Google Drive",url:"https://drive.google.com",category:"Productivity",need:1},
+      {name:"Google Docs",url:"https://docs.google.com",category:"Productivity",need:1},
+      {name:"Google Sheets",url:"https://sheets.google.com",category:"Productivity",need:1},
+      {name:"Gmail",url:"https://mail.google.com",category:"Communication",need:1},
+      {name:"Outlook",url:"https://outlook.live.com",category:"Communication",need:1},
+      {name:"Proton Mail",url:"https://proton.me",category:"Communication",need:1},
+      {name:"Google Calendar",url:"https://calendar.google.com",category:"Productivity",need:0.5},
+      {name:"Google Keep",url:"https://keep.google.com",category:"Productivity",need:0.5},
+      {name:"Notion",url:"https://www.notion.so",category:"Productivity",need:1},
+      {name:"Trello",url:"https://trello.com",category:"Productivity",need:1},
+      {name:"Todoist",url:"https://todoist.com",category:"Productivity",need:1},
+      {name:"Canva",url:"https://www.canva.com",category:"Design",need:3},
+      {name:"Figma",url:"https://www.figma.com",category:"Design",need:3},
+      {name:"ChatGPT",url:"https://chatgpt.com",category:"AI",need:2},
+      {name:"Google Gemini",url:"https://gemini.google.com",category:"AI",need:2},
+      {name:"Claude",url:"https://claude.ai",category:"AI",need:2},
+      {name:"Microsoft Copilot",url:"https://copilot.microsoft.com",category:"AI",need:2},
+      {name:"Perplexity",url:"https://www.perplexity.ai",category:"AI",need:2},
+      {name:"Hugging Face",url:"https://huggingface.co",category:"AI",need:2},
+      {name:"GitHub",url:"https://github.com",category:"Development",need:1},
+      {name:"GitLab",url:"https://gitlab.com",category:"Development",need:1},
+      {name:"Stack Overflow",url:"https://stackoverflow.com",category:"Development",need:1},
+      {name:"Replit",url:"https://replit.com",category:"Development",need:2},
+      {name:"CodePen",url:"https://codepen.io",category:"Development",need:1},
+      {name:"MDN Web Docs",url:"https://developer.mozilla.org",category:"Learning",need:1},
+      {name:"W3Schools",url:"https://www.w3schools.com",category:"Learning",need:1},
+      {name:"freeCodeCamp",url:"https://www.freecodecamp.org",category:"Learning",need:1},
+      {name:"Python.org",url:"https://www.python.org",category:"Development",need:0.5},
+      {name:"Google Colab",url:"https://colab.research.google.com",category:"Development",need:2},
+      {name:"Kaggle",url:"https://www.kaggle.com",category:"Learning",need:2},
+      {name:"npm",url:"https://www.npmjs.com",category:"Development",need:1},
+      {name:"PyPI",url:"https://pypi.org",category:"Development",need:0.5},
+      {name:"Vercel",url:"https://vercel.com",category:"Development",need:1},
+      {name:"YouTube",url:"https://www.youtube.com",category:"Video",need:3},
+      {name:"YouTube Music",url:"https://music.youtube.com",category:"Music",need:1},
+      {name:"Netflix",url:"https://www.netflix.com",category:"Video",need:3},
+      {name:"Prime Video",url:"https://www.primevideo.com",category:"Video",need:3},
+      {name:"Disney+",url:"https://www.disneyplus.com",category:"Video",need:3},
+      {name:"JioHotstar",url:"https://www.hotstar.com",category:"Video",need:3},
+      {name:"Twitch",url:"https://www.twitch.tv",category:"Live video",need:5},
+      {name:"Spotify",url:"https://open.spotify.com",category:"Music",need:1},
+      {name:"SoundCloud",url:"https://soundcloud.com",category:"Music",need:1},
+      {name:"Apple Music",url:"https://music.apple.com",category:"Music",need:1},
+      {name:"Instagram",url:"https://www.instagram.com",category:"Social",need:2},
+      {name:"Facebook",url:"https://www.facebook.com",category:"Social",need:2},
+      {name:"Threads",url:"https://www.threads.net",category:"Social",need:1},
+      {name:"X",url:"https://x.com",category:"Social",need:1},
+      {name:"Reddit",url:"https://www.reddit.com",category:"Social",need:1},
+      {name:"Pinterest",url:"https://www.pinterest.com",category:"Social",need:2},
+      {name:"LinkedIn",url:"https://www.linkedin.com",category:"Social",need:1},
+      {name:"Snapchat Web",url:"https://web.snapchat.com",category:"Social",need:2},
+      {name:"Discord",url:"https://discord.com",category:"Communication",need:2},
+      {name:"Telegram Web",url:"https://web.telegram.org",category:"Communication",need:1},
+      {name:"WhatsApp Web",url:"https://web.whatsapp.com",category:"Communication",need:1},
+      {name:"Zoom",url:"https://zoom.us",category:"Meetings",need:3},
+      {name:"Google Meet",url:"https://meet.google.com",category:"Meetings",need:3},
+      {name:"Microsoft Teams",url:"https://teams.microsoft.com",category:"Meetings",need:3},
+      {name:"Whereby",url:"https://whereby.com",category:"Meetings",need:3},
+      {name:"Jitsi Meet",url:"https://meet.jit.si",category:"Meetings",need:3},
+      {name:"Slack",url:"https://slack.com",category:"Communication",need:1},
+      {name:"Microsoft 365",url:"https://www.microsoft365.com",category:"Productivity",need:2},
+      {name:"Dropbox",url:"https://www.dropbox.com",category:"Storage",need:1},
+      {name:"OneDrive",url:"https://onedrive.live.com",category:"Storage",need:1},
+      {name:"Amazon India",url:"https://www.amazon.in",category:"Shopping",need:1},
+      {name:"Flipkart",url:"https://www.flipkart.com",category:"Shopping",need:1},
+      {name:"Myntra",url:"https://www.myntra.com",category:"Shopping",need:2},
+      {name:"Meesho",url:"https://www.meesho.com",category:"Shopping",need:1},
+      {name:"Ajio",url:"https://www.ajio.com",category:"Shopping",need:2},
+      {name:"BigBasket",url:"https://www.bigbasket.com",category:"Shopping",need:1},
+      {name:"JioMart",url:"https://www.jiomart.com",category:"Shopping",need:1},
+      {name:"IndiaMART",url:"https://www.indiamart.com",category:"Shopping",need:1},
+      {name:"Booking.com",url:"https://www.booking.com",category:"Travel",need:2},
+      {name:"MakeMyTrip",url:"https://www.makemytrip.com",category:"Travel",need:2},
+      {name:"IRCTC",url:"https://www.irctc.co.in",category:"Travel",need:1},
+      {name:"Google Flights",url:"https://www.google.com/travel/flights",category:"Travel",need:2},
+      {name:"Uber",url:"https://www.uber.com",category:"Travel",need:2},
+      {name:"Ola",url:"https://www.olacabs.com",category:"Travel",need:2},
+      {name:"RedBus",url:"https://www.redbus.in",category:"Travel",need:1},
+      {name:"Maps.me",url:"https://maps.me",category:"Maps",need:1},
+      {name:"The Weather Channel",url:"https://weather.com",category:"Information",need:1},
+      {name:"AccuWeather",url:"https://www.accuweather.com",category:"Information",need:1},
+      {name:"BBC News",url:"https://www.bbc.com/news",category:"News",need:1},
+      {name:"Reuters",url:"https://www.reuters.com",category:"News",need:1},
+      {name:"The Hindu",url:"https://www.thehindu.com",category:"News",need:1},
+      {name:"NDTV",url:"https://www.ndtv.com",category:"News",need:2},
+      {name:"Indian Express",url:"https://indianexpress.com",category:"News",need:1},
+      {name:"BBC Learning English",url:"https://www.bbc.co.uk/learningenglish",category:"Learning",need:1},
+      {name:"Khan Academy",url:"https://www.khanacademy.org",category:"Learning",need:2},
+      {name:"Coursera",url:"https://www.coursera.org",category:"Learning",need:2},
+      {name:"edX",url:"https://www.edx.org",category:"Learning",need:2},
+      {name:"Udemy",url:"https://www.udemy.com",category:"Learning",need:2},
+      {name:"Duolingo",url:"https://www.duolingo.com",category:"Learning",need:1},
+      {name:"Google Classroom",url:"https://classroom.google.com",category:"Learning",need:1}
+];
+const $=id=>document.getElementById(id);
+let measuredDownload=null;
+function estimate(site){if(measuredDownload===null)return {label:"Not tested",className:"maybe"};if(measuredDownload>=site.need*1.25)return {label:"Likely",className:"good"};if(measuredDownload>=site.need*.75)return {label:"Borderline",className:"maybe"};return {label:"May struggle",className:"poor"}}
+function renderSites(){const q=$("site-search").value.trim().toLowerCase(),filter=$("site-filter").value;const rows=sites.filter(s=>{const e=estimate(s),matches=(s.name+" "+s.category).toLowerCase().includes(q);return matches&&(filter==="all"||(filter==="likely"&&e.label==="Likely")||(filter==="struggle"&&e.label==="May struggle")||(filter==="video"&&/video|music|live video/i.test(s.category))||(filter==="learning"&&/learning|development/i.test(s.category)))});$("website-list").replaceChildren();for(const s of rows){const e=estimate(s),tr=document.createElement("tr");const values=[s.name,s.category,s.need+" Mbps"];values.forEach((v,i)=>{const td=document.createElement("td");if(i===0){const a=document.createElement("a");a.href=s.url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=v;td.append(a)}else td.textContent=v;tr.append(td)});const status=document.createElement("td"),pill=document.createElement("span");pill.className="pill "+e.className;pill.textContent=e.label;status.append(pill);tr.append(status);$("website-list").append(tr)}$("list-count").textContent="Showing "+rows.length+" of 100 websites"}
+function updateSummary(){const likely=measuredDownload===null?0:sites.filter(s=>measuredDownload>=s.need*1.25).length;$("likely-count").textContent=measuredDownload===null?"— / 100":likely+" / 100";$("likely-bar").style.width=(likely)+"%";if(measuredDownload===null){$("profile").textContent="Not tested";$("profile-desc").textContent="Run the speed test first.";$("tabs-count").textContent="—";$("activity-guidance").textContent="Run the test to get suggestions for text browsing, social media, video calls, HD streaming, and 4K streaming.";return}const d=measuredDownload;if(d<1){$("profile").textContent="Very limited";$("profile-desc").textContent="Text-first browsing is best."}else if(d<5){$("profile").textContent="Basic";$("profile-desc").textContent="Everyday sites; lighter media."}else if(d<15){$("profile").textContent="Good";$("profile-desc").textContent="Most browsing and HD video."}else if(d<50){$("profile").textContent="Fast";$("profile-desc").textContent="Heavy browsing and multiple streams."}else{$("profile").textContent="Very fast";$("profile-desc").textContent="High-bandwidth tasks should feel smoother."}const tabs=d<1?"1–2":d<5?"2–5":d<15?"5–10":d<50?"10–20":"20+";$("tabs-count").textContent=tabs;$("tabs-desc").textContent="Approximate light tabs; video tabs use much more data";$("activity-guidance").textContent="Text & search: "+(d>=.5?"likely fine":"may feel slow")+" · Social media: "+(d>=2?"likely fine":"may buffer")+" · Video calls: "+(d>=3?"likely fine":"may be unstable")+" · HD streaming: "+(d>=5?"likely fine":"may buffer")+" · 4K streaming: "+(d>=25?"more suitable":"not recommended on this measured speed")+". Upload speed and ping also matter."}
+async function timedDownload(bytes){const url="https://speed.cloudflare.com/__down?bytes="+bytes+"&cache="+Date.now()+"-"+Math.random();const start=performance.now();const res=await fetch(url,{cache:"no-store"});if(!res.ok)throw new Error("Download test endpoint returned "+res.status);const data=await res.arrayBuffer();const sec=(performance.now()-start)/1000;if(!data.byteLength||sec<=0)throw new Error("No download data received");return {mbps:(data.byteLength*8/sec)/1e6,ms:performance.now()-start}}
+async function timedUpload(bytes){const body=new Uint8Array(bytes);const start=performance.now();const res=await fetch("https://speed.cloudflare.com/__up?cache="+Date.now(),{method:"POST",body,headers:{"Content-Type":"application/octet-stream"},cache:"no-store"});if(!res.ok)throw new Error("Upload test endpoint returned "+res.status);await res.arrayBuffer().catch(()=>new ArrayBuffer(0));const sec=(performance.now()-start)/1000;if(sec<=0)throw new Error("Invalid upload timing");return (bytes*8/sec)/1e6}
+$("run-speed-test").addEventListener("click",async()=>{const btn=$("run-speed-test");btn.disabled=true;btn.textContent="Testing connection…";$("test-status").textContent="Measuring latency and download speed. Please keep this page open.";const pings=[];try{for(let i=0;i<3;i++){const start=performance.now();await fetch("https://speed.cloudflare.com/__down?bytes=1000&ping="+Date.now()+"-"+i,{cache:"no-store"});pings.push(performance.now()-start)}$("ping-value").textContent=Math.round(pings.reduce((a,b)=>a+b,0)/pings.length);const a=await timedDownload(1000000);const b=await timedDownload(4000000);measuredDownload=(a.mbps+b.mbps)/2;$("download-value").textContent=measuredDownload.toFixed(1);$("test-status").textContent="Download test complete. Checking upload speed…";try{const up=await timedUpload(500000);$("upload-value").textContent=up.toFixed(1)}catch(e){$("upload-value").textContent="N/A";$("test-status").textContent="Download and ping measured; upload test unavailable in this browser/network."}updateSummary();renderSites();if($("test-status").textContent.startsWith("Measuring"))$("test-status").textContent="Test complete. Results are estimates for your current connection."}catch(e){$("test-status").textContent="Test could not finish: "+(e.message||"network request failed")+". Try again or use the official Cloudflare speed test.";if(measuredDownload===null){$("download-value").textContent="N/A";$("ping-value").textContent="N/A";$("upload-value").textContent="N/A"}}finally{btn.disabled=false;btn.textContent="↻ Test again"}});
+$("site-search").addEventListener("input",renderSites);$("site-filter").addEventListener("change",renderSites);updateSummary();renderSites();
+</script></body></html>
