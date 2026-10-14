@@ -62,7 +62,8 @@
     if (!title) return;
     if (!card.id) card.id = "tool-" + title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
     const desc = card.querySelector(".tool-heading p")?.textContent?.trim() || "Open this tool";
-    addItem({title, description:desc, href:"#"+card.id, icon:iconFor(title, String(index+1).padStart(2,"0")), kind:"internal"});
+    const pageLink = card.querySelector('a[href$=".html"]')?.getAttribute("href");
+    addItem({title, description:desc, href:pageLink || "#"+card.id, icon:iconFor(title, String(index+1).padStart(2,"0")), kind:pageLink ? "external" : "internal"});
   });
 
   const qrLink = [...document.querySelectorAll('a[href*="qr-tools.html"]')][0];
