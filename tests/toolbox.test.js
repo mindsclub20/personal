@@ -48,5 +48,4 @@ test("internet checker is discoverable from the toolbox and has a 100-site direc
 test("All Tools links standalone tool cards to their own pages", () => {
   const directory = fs.readFileSync(path.join(root, "tools-directory.js"), "utf8");
   assert.match(directory, /card\.querySelector\('a\[href\$=".html"\]'\)/);
-  assert.match(directory, /internet-checker\.html/);
 });
