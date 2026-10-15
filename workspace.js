@@ -23,7 +23,7 @@ const app=document.createElement("div");app.className="ws-app";app.innerHTML=`
  <button class="ws-suggestion" data-view="tools"><span class="ws-s-icon">▦</span><span><strong>Open my toolbox</strong><small>Calculator, Python, files, notes, and more</small></span></button>
  </div></section><div class="ws-messages" id="ws-messages"></div></div></div>
  <section class="ws-tool-view" id="ws-tool-view"><div class="ws-tool-head"><div><h2>Your tools</h2><p>Utilities from your existing toolbox, kept in this workspace.</p></div><button class="ws-back-chat" id="ws-back-chat">← Back to chat</button></div><div class="ws-tool-grid" id="ws-tool-grid"></div></section>
- <footer class="ws-composer-wrap" id="ws-composer-wrap"><form class="ws-composer-box" id="ws-form"><textarea class="ws-composer" id="ws-composer" rows="1" maxlength="8000" placeholder="Message your workspace…" aria-label="Write a message"></textarea><div class="ws-composer-tools"><div class="ws-composer-left"><button class="ws-composer-tool" type="button" id="ws-add-tool">＋ Tools</button><button class="ws-composer-tool" type="button" id="ws-focus-prompt">✧ Help me focus</button></div><div class="ws-composer-right"><span style="font-size:10px;color:var(--ws-muted);padding-right:5px">Enter to send</span><button class="ws-send" id="ws-send" type="submit" aria-label="Send message" disabled>↑</button></div></div></form><p class="ws-disclaimer">AI replies are not connected yet. This workspace UI is ready for a secure server-side AI integration; no API key is embedded in the page.</p></footer>
+ <footer class="ws-composer-wrap" id="ws-composer-wrap"><form class="ws-composer-box" id="ws-form"><textarea class="ws-composer" id="ws-composer" rows="1" maxlength="8000" placeholder="Message your workspace…" aria-label="Write a message"></textarea><div class="ws-composer-tools"><div class="ws-composer-left"><button class="ws-composer-tool" type="button" id="ws-add-tool">＋ Tools</button><button class="ws-composer-tool" type="button" id="ws-focus-prompt">✧ Help me focus</button></div><div class="ws-composer-right"><span style="font-size:10px;color:var(--ws-muted);padding-right:5px">Enter to send</span><button class="ws-send" id="ws-send" type="submit" aria-label="Send message" disabled>↑</button></div></div></form><p class="ws-disclaimer">Powered by Google Gemini. Sign in through Owner login to send messages; the API key stays on the server.</p></footer>
 </section></div>`;
 document.body.append(app);
 const originalTools=$(".tools-layout");
@@ -42,7 +42,59 @@ function openChat(id){currentId=id;renderHistory();renderMessages();showView("ch
 function newChat(){currentId=null;renderHistory();renderMessages();$("#ws-composer").value="";$("#ws-composer").focus();showView("chat")}
 function addMessage(role,text){let c=active();if(!c){c={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),title:text.slice(0,44)+(text.length>44?"…":""),messages:[],updated:Date.now()};conversations.unshift(c);currentId=c.id}c.messages.push({role,text});c.updated=Date.now();conversations.sort((a,b)=>b.updated-a.updated);persist();renderHistory();renderMessages()}
 function showView(view){const isTools=view==="tools";$("#ws-tool-view").classList.toggle("open",isTools);$("#ws-chat-scroll").style.display=isTools?"none":"block";$("#ws-composer-wrap").style.display=isTools?"none":"block";$$("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===view));app.classList.remove("sidebar-open")}
-function sendMessage(text){const v=(text||"").trim();if(!v)return;$("#ws-composer").value="";resizeComposer();addMessage("user",v);addMessage("assistant","This workspace is currently in interface-only mode, so it hasn't sent your message to an AI model. Your message is saved locally in this browser. To enable real AI replies, connect a provider through a secure server-side endpoint and keep its API key in Vercel environment variables—not in frontend code.");}
+let sendingToGemini=false;
+async function sendMessage(text){
+ const v=(text||"").trim();
+ if(!v||sendingToGemini)return;
+ $("#ws-composer").value="";
+ resizeComposer();
+ addMessage("user",v);
+ const conversation=active();
+ if(!conversation)return;
+ const conversationId=conversation.id;
+ const pendingText="Thinking with Gemini…";
+ addMessage("assistant",pendingText);
+ sendingToGemini=true;
+ resizeComposer();
+ try{
+  const target=conversations.find(c=>c.id===conversationId);
+  const history=(target?target.messages:[])
+   .filter(m=>!(m.role==="assistant"&&m.text===pendingText))
+   .slice(-12)
+   .map(m=>({role:m.role,text:m.text}));
+  while(history.length&&history[0].role==="assistant")history.shift();
+  const response=await fetch("/api/chat",{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   credentials:"same-origin",
+   body:JSON.stringify({messages:history})
+  });
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(data.error||"Gemini could not answer. Please try again.");
+  const current=conversations.find(c=>c.id===conversationId);
+  if(current){
+   const index=current.messages.findIndex(m=>m.role==="assistant"&&m.text===pendingText);
+   if(index!==-1)current.messages[index].text=String(data.reply||"Gemini returned an empty reply.");
+   current.updated=Date.now();
+   persist();
+   renderHistory();
+   if(currentId===conversationId)renderMessages();
+  }
+ }catch(error){
+  const current=conversations.find(c=>c.id===conversationId);
+  if(current){
+   const index=current.messages.findIndex(m=>m.role==="assistant"&&m.text===pendingText);
+   if(index!==-1)current.messages[index].text=error.message||"Could not reach Gemini. Please try again.";
+   current.updated=Date.now();
+   persist();
+   renderHistory();
+   if(currentId===conversationId)renderMessages();
+  }
+ }finally{
+  sendingToGemini=false;
+  resizeComposer();
+ }
+}
 function resizeComposer(){const el=$("#ws-composer");el.style.height="auto";el.style.height=Math.min(el.scrollHeight,160)+"px";$("#ws-send").disabled=!el.value.trim()}
 $("#ws-form").addEventListener("submit",e=>{e.preventDefault();sendMessage($("#ws-composer").value)});
 $("#ws-composer").addEventListener("input",resizeComposer);$("#ws-composer").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage($("#ws-composer").value)}});
