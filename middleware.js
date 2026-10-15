@@ -16,11 +16,18 @@ function validSession(token, secret) {
 
 export default function middleware(request) {
   const url = new URL(request.url);
-  if (!url.pathname.startsWith("/dashboard")) return;
+  const path = url.pathname;
+
+  // Public routes: a name-only homepage and the sign-in endpoint/page.
+  if (path === "/" || path === "/login.html" || path === "/api/login") return;
+
   const token = request.cookies.get("owner_session")?.value;
-  if (!validSession(token, process.env.SESSION_SECRET)) {
-    return Response.redirect(new URL("/login.html?next=%2Fdashboard.html", request.url), 307);
+  if (validSession(token, process.env.SESSION_SECRET)) return;
+
+  if (path.startsWith("/api/")) {
+    return Response.json({ error: "Authentication required" }, { status: 401 });
   }
+  return Response.redirect(new URL("/login.html", request.url), 307);
 }
 
-export const config = { matcher: ["/dashboard", "/dashboard.html"] };
+export const config = { matcher: ["/((?!_vercel).*)"] };
