@@ -106,5 +106,72 @@ $("#ws-focus-prompt").addEventListener("click",()=>{const el=$("#ws-composer");e
 $$("[data-prompt]").forEach(b=>b.addEventListener("click",()=>{const el=$("#ws-composer");el.value=b.dataset.prompt;resizeComposer();el.focus()}));
 $$(".ws-suggestion[data-view='tools']").forEach(b=>b.addEventListener("click",()=>showView("tools")));
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();newChat()}if(e.key==="Escape")app.classList.remove("sidebar-open")});
+
+/* Quick launcher + local daily planner */
+const quickLauncher=document.createElement("div");
+quickLauncher.className="ws-command-overlay";
+quickLauncher.id="ws-command-overlay";
+quickLauncher.hidden=true;
+quickLauncher.innerHTML='<section class="ws-command" role="dialog" aria-modal="true" aria-labelledby="ws-command-title"><div class="ws-command-top"><span id="ws-command-title">⌕ Find a tool</span><button type="button" class="ws-command-close" aria-label="Close tool finder">Esc</button></div><input id="ws-command-input" type="search" placeholder="Search calculator, notes, Python…" autocomplete="off"><div id="ws-command-results" class="ws-command-results" role="listbox" aria-label="Tools"></div><p class="ws-command-hint">Tip: press Ctrl/⌘ + K anytime</p></section>';
+app.append(quickLauncher);
+const commandInput=$("#ws-command-input"),commandResults=$("#ws-command-results");
+const commandItems=[
+ {name:"Daily planner",desc:"Plan today and check off tasks",icon:"☑",action:()=>openToolCard("ws-daily-planner")},
+ {name:"Smart calculator",desc:"Quick arithmetic",icon:"÷",action:()=>openToolCard("calculator")},
+ {name:"AI image studio",desc:"Create image prompts and images",icon:"✦",action:()=>openToolCard("image-studio")},
+ {name:"File converter",desc:"Convert local files",icon:"⇧",action:()=>openToolCard("pdf-tool")},
+ {name:"Idea Spark Lab",desc:"Get a small challenge",icon:"✧",action:()=>openToolCard("idea-lab")},
+ {name:"Python Playground",desc:"Write and run Python",icon:"Py",action:()=>{showView("tools");location.href="/python.html"}},
+ {name:"Quick notes",desc:"Capture thoughts on this device",icon:"✎",action:()=>openToolCard("more-tools")},
+ {name:"Word counter",desc:"Count words and characters",icon:"Aa",action:()=>openToolCard("word-counter")},
+ {name:"Unit converter",desc:"Convert measurements",icon:"↔",action:()=>openToolCard("converter")},
+ {name:"Focus timer",desc:"Start a 25-minute focus session",icon:"◷",action:()=>openToolCard("focus-card")}
+];
+function openToolCard(id){
+ showView("tools");
+ const card=id==="ws-daily-planner"?$("#ws-daily-planner"):id==="focus-card"?$(".focus-card"):$("#"+id);
+ quickLauncher.hidden=true;
+ if(card){card.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});card.classList.add("ws-tool-highlight");setTimeout(()=>card.classList.remove("ws-tool-highlight"),1200)}
+}
+function renderCommandResults(query=""){
+ commandResults.replaceChildren();
+ const matches=commandItems.filter(x=>(x.name+" "+x.desc).toLowerCase().includes(query.trim().toLowerCase()));
+ if(!matches.length){const empty=document.createElement("p");empty.className="ws-command-empty";empty.textContent="No matching tools. Try a shorter search.";commandResults.append(empty);return}
+ matches.forEach((item,index)=>{const b=document.createElement("button");b.type="button";b.className="ws-command-item";b.setAttribute("role","option");b.innerHTML='<span class="ws-command-icon">'+esc(item.icon)+'</span><span><strong>'+esc(item.name)+'</strong><small>'+esc(item.desc)+'</small></span><span class="ws-command-arrow">↵</span>';b.addEventListener("click",item.action);if(index===0)b.dataset.first="true";commandResults.append(b)});
+}
+function openCommand(){quickLauncher.hidden=false;renderCommandResults(commandInput.value);commandInput.focus();commandInput.select()}
+function closeCommand(){quickLauncher.hidden=true}
+commandInput.addEventListener("input",()=>renderCommandResults(commandInput.value));
+$(".ws-command-close").addEventListener("click",closeCommand);
+quickLauncher.addEventListener("click",e=>{if(e.target===quickLauncher)closeCommand()});
+const finderButton=document.createElement("button");
+finderButton.type="button";finderButton.className="ws-command-open";finderButton.innerHTML='<span>⌕</span><span>Find a tool</span><kbd>Ctrl K</kbd>';
+finderButton.addEventListener("click",openCommand);
+$("#ws-new").insertAdjacentElement("afterend",finderButton);
+function installDailyPlanner(){
+ const card=document.createElement("article");
+ card.id="ws-daily-planner";card.className="tool-card ws-planner-card";
+ card.innerHTML='<div class="tool-heading"><span class="tool-icon ws-planner-icon">☑</span><div><h3>Daily planner</h3><p>Keep today simple: choose a few doable tasks.</p></div><span class="tool-index">NEW</span></div><div class="ws-planner-date" id="ws-planner-date"></div><form class="ws-planner-form" id="ws-planner-form"><label class="field-label" for="ws-planner-input">Add a task</label><div class="ws-planner-entry"><input id="ws-planner-input" class="text-input" maxlength="140" placeholder="e.g. Practise Python for 20 minutes" required><button class="btn primary" type="submit">Add</button></div></form><div class="ws-planner-progress"><div><span id="ws-planner-count">0 of 0 complete</span><strong id="ws-planner-percent">0%</strong></div><div class="ws-planner-track"><span id="ws-planner-bar"></span></div></div><ul class="ws-planner-list" id="ws-planner-list" aria-live="polite"></ul><div class="ws-planner-footer"><span>Saved on this device</span><button class="btn outline" id="ws-planner-clear" type="button">Clear completed</button></div>';
+ $("#ws-tool-grid").prepend(card);
+ const storageKey="shyam-daily-planner-v1";
+ let tasks=[];try{tasks=JSON.parse(localStorage.getItem(storageKey)||"[]");if(!Array.isArray(tasks))tasks=[]}catch{tasks=[]}
+ const save=()=>{try{localStorage.setItem(storageKey,JSON.stringify(tasks))}catch{}};
+ $("#ws-planner-date").textContent=new Intl.DateTimeFormat(undefined,{weekday:"long",month:"short",day:"numeric"}).format(new Date());
+ function draw(){
+  const list=$("#ws-planner-list");list.replaceChildren();
+  tasks.forEach(task=>{const li=document.createElement("li");li.className="ws-planner-task"+(task.done?" done":"");const label=document.createElement("label");label.className="ws-planner-label";const check=document.createElement("input");check.type="checkbox";check.checked=!!task.done;check.addEventListener("change",()=>{task.done=check.checked;save();draw()});const title=document.createElement("span");title.textContent=task.text;label.append(check,title);const del=document.createElement("button");del.type="button";del.className="ws-planner-delete";del.textContent="×";del.setAttribute("aria-label","Delete task: "+task.text);del.addEventListener("click",()=>{tasks=tasks.filter(t=>t.id!==task.id);save();draw()});li.append(label,del);list.append(li)});
+  const done=tasks.filter(t=>t.done).length,pct=tasks.length?Math.round(done/tasks.length*100):0;
+  $("#ws-planner-count").textContent=done+" of "+tasks.length+" complete";$("#ws-planner-percent").textContent=pct+"%";$("#ws-planner-bar").style.width=pct+"%";
+  if(!tasks.length){const empty=document.createElement("li");empty.className="ws-planner-empty";empty.textContent="Your plan is clear. Add one small task to get started.";list.append(empty)}
+ }
+ $("#ws-planner-form").addEventListener("submit",e=>{e.preventDefault();const input=$("#ws-planner-input"),value=input.value.trim();if(!value)return;tasks.unshift({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),text:value,done:false});save();draw();input.value="";input.focus()});
+ $("#ws-planner-clear").addEventListener("click",()=>{tasks=tasks.filter(t=>!t.done);save();draw()});draw();
+}
+installDailyPlanner();
+document.addEventListener("keydown",e=>{
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openCommand()}
+ if(e.key==="Escape"&&!quickLauncher.hidden){closeCommand();finderButton.focus()}
+});
+
 renderHistory();renderMessages();showView("chat");
 })();
