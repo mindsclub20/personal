@@ -105,7 +105,7 @@ $("#ws-add-tool").addEventListener("click",()=>showView("tools"));$("#ws-back-ch
 $("#ws-focus-prompt").addEventListener("click",()=>{const el=$("#ws-composer");el.value="Help me choose one realistic task to focus on for the next 25 minutes.";resizeComposer();el.focus()});
 $$("[data-prompt]").forEach(b=>b.addEventListener("click",()=>{const el=$("#ws-composer");el.value=b.dataset.prompt;resizeComposer();el.focus()}));
 $$(".ws-suggestion[data-view='tools']").forEach(b=>b.addEventListener("click",()=>showView("tools")));
-document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();newChat()}if(e.key==="Escape")app.classList.remove("sidebar-open")});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")app.classList.remove("sidebar-open")});
 
 /* Quick launcher + local daily planner */
 const quickLauncher=document.createElement("div");
