@@ -37,3 +37,28 @@ This is a static site suitable for Vercel. No database or environment variables 
 - This is not a universal conversion engine: DOCX/XLSX and other specialist formats need dedicated parsers or a secure server-side office conversion service. Do not upload sensitive documents to services you do not trust.
 - PDF-to-PDF / image-to-PDF output is rendered for visual fidelity, so text in converted pages may not be searchable or selectable.
 \n\n### AI image studio status\n- The page builds a detailed prompt and can copy it to the clipboard, then open ChatGPT for image generation.\n- It does not generate images directly inside this site yet. Direct generation requires a compatible image API and a secure server-side endpoint; never put an API key in `script.js`.\n- Prompts can be creatively flexible, but this is not designed to bypass provider safety controls.\n
+
+## Public homepage + private owner dashboard
+
+- The public homepage remains accessible at `/`; use **Owner login** to open the private area.
+- The dashboard route is protected by Vercel middleware and a signed, HttpOnly session cookie.
+- The login accepts exactly one configured owner username and one password hash. There is no registration.
+- Dashboard notes are saved only in the current browser/device. They are not server-synced.
+
+### Required Vercel environment variables
+
+Configure these for **Production** (and Preview only if you intend to test there):
+
+1. `OWNER_USERNAME` — your one chosen username.
+2. `OWNER_PASSWORD_HASH` — an scrypt hash generated locally; do not paste the plain password into GitHub or chat.
+3. `SESSION_SECRET` — a long random secret (at least 32 random bytes). Generate locally, for example with Node's `crypto.randomBytes(32).toString("hex")`.
+
+To generate the password hash on a computer with Node.js, run:
+
+```bash
+node scripts/make-password-hash.js 'your-long-unique-password'
+```
+
+Use the printed `scrypt:...` value as `OWNER_PASSWORD_HASH`, then remove the password from your shell history if your terminal stores commands. Choose a unique password of at least 12 characters. Never commit the hash or session secret to the repository. After saving the Vercel variables, redeploy Production.
+
+The login will intentionally report “not configured” until all three variables exist. The cookie expires after eight hours. Do not use this dashboard to store highly sensitive information.
