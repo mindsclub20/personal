@@ -28,11 +28,23 @@ async function validSession(token, secret) {
   } catch { return false; }
 }
 
+function readCookie(request, name) {
+  const cookieHeader = request.headers?.get?.("cookie") || "";
+  for (const part of cookieHeader.split(";")) {
+    const separator = part.indexOf("=");
+    if (separator < 0) continue;
+    if (part.slice(0, separator).trim() === name) {
+      return part.slice(separator + 1).trim();
+    }
+  }
+  return undefined;
+}
+
 export default async function middleware(request) {
   const path = new URL(request.url).pathname;
   if (path === "/" || path === "/login.html" || path === "/api/login") return;
 
-  const token = request.cookies.get("owner_session")?.value;
+  const token = readCookie(request, "owner_session");
   if (await validSession(token, process.env.SESSION_SECRET)) return;
 
   if (path.startsWith("/api/")) {
