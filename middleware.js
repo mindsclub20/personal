@@ -42,7 +42,9 @@ function readCookie(request, name) {
 
 export default async function middleware(request) {
   const path = new URL(request.url).pathname;
-  if (path === "/" || path === "/login.html" || path === "/api/login") return;
+  // The robotics lab is a self-contained, browser-only learning demo. It stores
+  // projects in the visitor's own localStorage and has no owner data or APIs.
+  if (path === "/" || path === "/login.html" || path === "/api/login" || path === "/robotics-lab.html") return;
 
   const token = readCookie(request, "owner_session");
   if (await validSession(token, process.env.SESSION_SECRET)) return;
