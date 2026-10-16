@@ -133,3 +133,25 @@ body{background:var(--ws-bg)}
 body.ws-dark .ws-sidebar{background:var(--ws-sidebar)}body.ws-dark .ws-command-open{background:#2b2b2b}body.ws-dark .ws-command-open kbd{background:#383244;color:#ddd}body.ws-dark .ws-planner-card{background:linear-gradient(145deg,#2b2b2b,#302a3e)!important}body.ws-dark .ws-planner-task{background:var(--ws-panel);border-color:var(--ws-line)}body.ws-dark .ws-planner-track{background:#454050}
 @media(max-width:760px){.ws-tool-view{padding:16px 12px 30px}.ws-tool-grid{grid-template-columns:1fr}.ws-tool-grid .ws-planner-card{grid-column:auto}.ws-topbar{padding:0 14px}.ws-command-overlay{padding-top:9vh}.ws-planner-entry{align-items:stretch}.ws-planner-entry .btn{padding:10px 13px}}
 @media(prefers-reduced-motion:reduce){.ws-tool-grid .tool-card,.ws-suggestion,.ws-planner-track span{transition:none!important}}
+
+/* Engineering bench refinement: original Wokwi-inspired workspace styling */
+.ws-app{background:var(--ws-bg);background-image:linear-gradient(rgba(118,85,217,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(118,85,217,.035) 1px,transparent 1px);background-size:24px 24px}
+.ws-sidebar{background:rgba(246,242,253,.96);backdrop-filter:blur(12px);border-right:1px solid #e4dbf3}
+.ws-brand{font-family:"Space Grotesk",system-ui,sans-serif;letter-spacing:-.45px}
+.ws-brand .ws-mark{border-radius:10px;background:#7355d9;box-shadow:0 5px 14px #7355d926}
+.ws-nav-btn{font-size:13px;font-weight:650;text-decoration:none}
+.ws-main{background:transparent}
+.ws-topbar{background:rgba(255,255,255,.82);backdrop-filter:blur(12px);border-bottom:1px solid #e7e0f2}
+.ws-model{font-family:"Space Grotesk",system-ui,sans-serif;font-weight:700}
+.ws-welcome{max-width:900px}
+.ws-welcome h1{font-family:"Space Grotesk",system-ui,sans-serif;letter-spacing:-1.4px}
+.ws-orb{border-radius:14px!important;box-shadow:0 7px 22px #7355d91a}
+.ws-suggestion{border:1px solid var(--ws-line);box-shadow:0 5px 18px #33205208;transition:transform .16s,border-color .16s,box-shadow .16s}
+.ws-suggestion:hover{transform:translateY(-2px);border-color:#cfc0f1;box-shadow:0 10px 25px #33205210}
+.ws-tool-grid .tool-card{position:relative}
+.ws-tool-grid .tool-card:focus-within{outline:2px solid #b9a7f1;outline-offset:2px}
+.ws-command{border:1px solid #e3d9f4;box-shadow:0 24px 80px #2e1a511f}
+.ws-command-open{border:1px solid #e4dbf3}
+body.ws-dark .ws-app{background-image:linear-gradient(rgba(182,168,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(182,168,255,.04) 1px,transparent 1px)}
+body.ws-dark .ws-sidebar,body.ws-dark .ws-topbar{background:rgba(29,26,39,.96);border-color:var(--ws-line)}
+@media(max-width:760px){.ws-sidebar{backdrop-filter:none}.ws-suggestion:hover{transform:none}}
