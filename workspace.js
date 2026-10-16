@@ -6,6 +6,7 @@ const app=document.createElement("div");app.className="ws-app";app.innerHTML=`
  <button class="ws-new" id="ws-new"><span class="ws-nav-icon">＋</span> New chat <span style="margin-left:auto;color:var(--ws-muted)">⌘K</span></button>
  <button class="ws-nav-btn active" data-view="chat"><span class="ws-nav-icon">◫</span> Chat</button>
  <button class="ws-nav-btn" data-view="tools"><span class="ws-nav-icon">▦</span> All tools</button>
+ <a class="ws-nav-btn" href="/internet-tester.html" aria-label="Open Internet Tester"><span class="ws-nav-icon">⌁</span> Internet Tester</a>
  <div class="ws-sidebar-label">Recent conversations</div><div class="ws-history" id="ws-history"></div>
  <div class="ws-side-spacer"></div><div class="ws-side-bottom">
   <button id="ws-theme"><span class="ws-nav-icon">◐</span><span>Switch appearance</span></button>
@@ -125,7 +126,8 @@ const commandItems=[
  {name:"Quick notes",desc:"Capture thoughts on this device",icon:"✎",action:()=>openToolCard("more-tools")},
  {name:"Word counter",desc:"Count words and characters",icon:"Aa",action:()=>openToolCard("word-counter")},
  {name:"Unit converter",desc:"Convert measurements",icon:"↔",action:()=>openToolCard("converter")},
- {name:"Focus timer",desc:"Start a 25-minute focus session",icon:"◷",action:()=>openToolCard("focus-card")}
+ {name:"Focus timer",desc:"Start a 25-minute focus session",icon:"◷",action:()=>openToolCard("focus-card")},
+ {name:"Internet Tester",desc:"Check connectivity, latency, and website reachability",icon:"⌁",action:()=>{location.href="/internet-tester.html"}}
 ];
 function openToolCard(id){
  showView("tools");
