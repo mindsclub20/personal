@@ -42,9 +42,9 @@ function readCookie(request, name) {
 
 export default async function middleware(request) {
   const path = new URL(request.url).pathname;
-  // The robotics lab is a self-contained, browser-only learning demo. It stores
-  // projects in the visitor's own localStorage and has no owner data or APIs.
-  if (path === "/" || path === "/login.html" || path === "/api/login" || path === "/robotics-lab.html") return;
+  // Only the public homepage and login endpoint bypass owner authentication.
+  // All private tools, including both robotics labs, use the same owner session.
+  if (path === "/" || path === "/login.html" || path === "/api/login") return;
 
   const token = readCookie(request, "owner_session");
   if (await validSession(token, process.env.SESSION_SECRET)) return;
