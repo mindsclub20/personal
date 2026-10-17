@@ -1,4 +1,4 @@
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createHmac, timingSafeEqual, randomUUID } from "node:crypto";
 import { inflateRawSync } from "node:zlib";
 
 function ownerAuthenticated(req) {
@@ -101,7 +101,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: "Provide a non-empty sketch of at most 50,000 characters." });
       }
       if (body.board && body.board !== "esp32") return res.status(400).json({ error: "Only the ESP32 Arduino target is supported." });
-      const requestId = crypto.randomUUID();
+      const requestId = randomUUID();
       const repo = process.env.GITHUB_ACTIONS_REPOSITORY || "mindsclub20/personal";
       const workflowPath = "/actions/workflows/esp32-compile.yml/dispatches";
       await github(workflowPath, {
