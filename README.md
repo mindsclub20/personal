@@ -62,3 +62,26 @@ node scripts/make-password-hash.js 'your-long-unique-password'
 Use the printed `scrypt:...` value as `OWNER_PASSWORD_HASH`, then remove the password from your shell history if your terminal stores commands. Choose a unique password of at least 12 characters. Never commit the hash or session secret to the repository. After saving the Vercel variables, redeploy Production.
 
 The login will intentionally report “not configured” until all three variables exist. The cookie expires after eight hours. Do not use this dashboard to store highly sensitive information.
+
+
+## VisualRobotics Lab (ESP32)
+
+Open `/visualrobotics-lab.html` from the authenticated dashboard.
+
+### Implemented in this repository
+- Arduino C++ sketch editing and download (`sketch.ino`).
+- Local browser project save/open, search, rename, duplicate, delete, Save As, JSON import/export.
+- Editable bill of materials with INR estimates (illustrative, not live prices).
+- Starter Wokwi `diagram.json` export and separate manual handoff to Wokwi.
+- PowerMat V4 conceptual demonstration firmware and project inventory.
+- Basic project/inventory validation; this is not C++ compilation, circuit verification, or electrical safety certification.
+
+### Known limitations — do not mistake these for finished capabilities
+- Projects currently persist in the current browser/device only; no cloud database sync is configured.
+- Wokwi is a manual handoff. The page does not auto-import, control, or read simulation state from Wokwi.
+- Generated `diagram.json` is a starter layout with no generated wire connections. Add and verify wiring/pin mappings in the simulator.
+- The page does not compile Arduino firmware or run an ESP32 simulator itself.
+- PowerMat V4 values are not real-world measurements. Never connect a generator/harvesting circuit directly to ESP32 pins without appropriate conditioning, voltage/current limits, and a verified circuit design.
+
+### Private access and deployment
+The site middleware intentionally protects the dashboard and VisualRobotics page with the same owner session. The public homepage link redirects to owner login until a valid session exists. The login endpoint requires the Vercel environment variables `OWNER_USERNAME`, `OWNER_PASSWORD_HASH` (scrypt hash), and `SESSION_SECRET`. Never commit the plain password or secrets. If these variables are missing, login reports that configuration is unavailable.
