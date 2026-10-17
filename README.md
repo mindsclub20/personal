@@ -70,17 +70,18 @@ Open `/visualrobotics-lab.html` from the authenticated dashboard.
 
 ### Implemented in this repository
 - Arduino C++ sketch editing and download (`sketch.ino`).
-- Local browser project save/open, search, rename, duplicate, delete, Save As, JSON import/export.
+- Local browser project save/open plus owner-authenticated cloud save/load across devices, search, rename, duplicate, soft-delete, restore, revision history/recovery, and JSON import/export.
 - Editable bill of materials with INR estimates (illustrative, not live prices).
 - Starter Wokwi `diagram.json` export and separate manual handoff to Wokwi.
 - PowerMat V4 conceptual demonstration firmware and project inventory.
-- Basic project/inventory validation; this is not C++ compilation, circuit verification, or electrical safety certification.
+- Project/inventory validation and a limited in-browser virtual ESP32 interpreter for a documented Arduino subset; neither is native C++ compilation or electrical safety certification.
 
 ### Known limitations — do not mistake these for finished capabilities
-- Projects currently persist in the current browser/device only; no cloud database sync is configured.
-- Wokwi is a manual handoff. The page does not auto-import, control, or read simulation state from Wokwi.
+- Cloud project storage uses a dedicated `visualrobotics` schema inside the existing Altrav Supabase project. Tables have RLS enabled, no browser-role policies, and are accessed through owner-authenticated server endpoints and service-role-only RPC functions.
+- Cloud CRUD/recovery functions and database permissions were tested directly; public browser access to the API correctly returns HTTP 401 without the owner session. Full authenticated browser testing still requires signing in through the site.
+- Wokwi remains a manual handoff. The page does not auto-import, control, or read simulation state from Wokwi.
 - Generated `diagram.json` is a starter layout with no generated wire connections. Add and verify wiring/pin mappings in the simulator.
-- The page does not compile Arduino firmware or run an ESP32 simulator itself.
+- The built-in Virtual ESP32 is a limited interpreter, not hardware-accurate simulation. The separate “Build firmware (.bin)” endpoint is wired to a secure compiler-worker interface, but a genuine compiler worker is not provisioned yet; it returns an explicit unavailable response instead of pretending to compile. A worker must run Arduino CLI with the Espressif ESP32 core and return compiler diagnostics plus a verified firmware binary.
 - PowerMat V4 values are not real-world measurements. Never connect a generator/harvesting circuit directly to ESP32 pins without appropriate conditioning, voltage/current limits, and a verified circuit design.
 
 ### Private access and deployment
