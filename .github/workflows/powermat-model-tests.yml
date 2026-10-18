@@ -35,7 +35,7 @@ jobs:
           from pathlib import Path
           import re
           html = Path('visualrobotics-lab.html').read_text()
-          scripts = re.findall(r'<script(?:\\s[^>]*)?>(.*?)</script>', html, re.S)
+          scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', html, re.S)
           if not scripts:
               raise SystemExit('No inline script found in visualrobotics-lab.html')
           Path('/tmp/visualrobotics-lab.mjs').write_text(scripts[-1])
