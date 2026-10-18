@@ -7,6 +7,13 @@ on:
         description: Unique build request ID
         required: true
         type: string
+      board:
+        description: Arduino board target (esp32 or esp32c3)
+        required: true
+        type: choice
+        options:
+          - esp32
+          - esp32c3
       sketch:
         description: Arduino sketch source (maximum 50000 characters)
         required: true
@@ -53,6 +60,7 @@ jobs:
         env:
           SKETCH_INPUT: ${{ inputs.sketch }}
           REQUEST_ID: ${{ inputs.request_id }}
+          BOARD: ${{ inputs.board }}
         shell: bash
         run: |
           set -euo pipefail
@@ -61,13 +69,14 @@ jobs:
           test -s "$RUNNER_TEMP/vr-sketch/sketch.ino"
           test "$(wc -c < "$RUNNER_TEMP/vr-sketch/sketch.ino")" -le 50000
           echo "request_id=$REQUEST_ID" >> "$GITHUB_OUTPUT"
+          echo "board=$BOARD" >> "$GITHUB_OUTPUT"
 
       - name: Compile ESP32 sketch
         id: compile
         shell: bash
         run: |
           set -o pipefail
-          arduino-cli compile --verbose --fqbn esp32:esp32:esp32 --output-dir "$RUNNER_TEMP/vr-build" "$RUNNER_TEMP/vr-sketch" 2>&1 | tee "$RUNNER_TEMP/vr-artifact/build.log"
+          arduino-cli compile --verbose --fqbn "esp32:esp32:${{ inputs.board }}" --output-dir "$RUNNER_TEMP/vr-build" "$RUNNER_TEMP/vr-sketch" 2>&1 | tee "$RUNNER_TEMP/vr-artifact/build.log"
 
       - name: Assemble flashable ESP32 firmware
         shell: bash
@@ -83,7 +92,14 @@ jobs:
             find "$BUILD" -maxdepth 4 -type f -printf '%p\n' | tee -a "$RUNNER_TEMP/vr-artifact/build.log"
             exit 1
           fi
-          python -m esptool --chip esp32 merge_bin -o "$RUNNER_TEMP/vr-artifact/firmware.bin" --flash_mode dio --flash_freq 40m --flash_size 4MB 0x1000 "$BOOT" 0x8000 "$PART" 0xe000 "$BOOTAPP" 0x10000 "$APP" 2>&1 | tee -a "$RUNNER_TEMP/vr-artifact/build.log"
+          if [[ "${{ inputs.board }}" == "esp32c3" ]]; then
+            CHIP="esp32c3"
+            BOOT_OFFSET="0x0"
+          else
+            CHIP="esp32"
+            BOOT_OFFSET="0x1000"
+          fi
+          python -m esptool --chip "$CHIP" merge_bin -o "$RUNNER_TEMP/vr-artifact/firmware.bin" --flash_mode dio --flash_freq 40m --flash_size 4MB "$BOOT_OFFSET" "$BOOT" 0x8000 "$PART" 0xe000 "$BOOTAPP" 0x10000 "$APP" 2>&1 | tee -a "$RUNNER_TEMP/vr-artifact/build.log"
           cp "$BUILD"/*.elf "$RUNNER_TEMP/vr-artifact/" 2>/dev/null || true
           sha256sum "$RUNNER_TEMP/vr-artifact/firmware.bin" | tee "$RUNNER_TEMP/vr-artifact/SHA256SUMS.txt"
           printf 'ESP32 Arduino compile succeeded. Merged flash image created.\n' > "$RUNNER_TEMP/vr-artifact/BUILD-RESULT.txt"
