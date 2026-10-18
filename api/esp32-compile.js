@@ -100,13 +100,14 @@ export default async function handler(req, res) {
       if (typeof body.code !== "string" || !body.code.trim() || body.code.length > 50000) {
         return res.status(400).json({ error: "Provide a non-empty sketch of at most 50,000 characters." });
       }
-      if (body.board && body.board !== "esp32") return res.status(400).json({ error: "Only the ESP32 Arduino target is supported." });
+      const board = body.board || "esp32";
+      if (!["esp32", "esp32c3"].includes(board)) return res.status(400).json({ error: "Supported Arduino targets are ESP32 DevKit and ESP32-C3." });
       const requestId = randomUUID();
       const repo = process.env.GITHUB_ACTIONS_REPOSITORY || "mindsclub20/personal";
       const workflowPath = "/actions/workflows/esp32-compile.yml/dispatches";
       await github(workflowPath, {
         method: "POST",
-        body: JSON.stringify({ ref: process.env.GITHUB_ACTIONS_REF || "main", inputs: { request_id: requestId, sketch: body.code } })
+        body: JSON.stringify({ ref: process.env.GITHUB_ACTIONS_REF || "main", inputs: { request_id: requestId, sketch: body.code, board } })
       });
       return res.status(202).json({ jobId: requestId, status: "queued", message: "Native ESP32 build queued in GitHub Actions." });
     }
