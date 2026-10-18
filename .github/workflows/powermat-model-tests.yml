@@ -5,6 +5,7 @@ on:
     paths:
       - 'powermat-model.js'
       - 'powermat-v4.html'
+      - 'visualrobotics-lab.html'
       - 'tests/powermat-model.test.mjs'
       - '.github/workflows/powermat-model-tests.yml'
   push:
@@ -28,5 +29,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Syntax-check VisualRobotics inline JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          html = Path('visualrobotics-lab.html').read_text()
+          scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', html, re.S)
+          if not scripts:
+              raise SystemExit('No inline script found in visualrobotics-lab.html')
+          Path('/tmp/visualrobotics-lab.mjs').write_text(scripts[-1])
+          PY
+          node --check /tmp/visualrobotics-lab.mjs
       - name: Run deterministic model tests
         run: node --experimental-default-type=module --test tests/powermat-model.test.mjs
