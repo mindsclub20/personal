@@ -61,9 +61,10 @@ export function advance(s, c, dt) {
     s.x = m.x; s.velocity = m.velocity;
     const dx = s.x - oldX;
     if (dx > 0) {
-      const resisting = c.stiffnessKNm * 1000 * s.x + c.damping * Math.max(0, s.velocity);
-      s.stepWork += Math.max(0, c.force - resisting) * dx;
-      s.mechanicalWork += Math.max(0, c.force - resisting) * dx;
+      // The motion is prescribed; estimate input work as applied force × compression travel.
+      const inputWork = c.force * dx;
+      s.stepWork += inputWork;
+      s.mechanicalWork += inputWork;
     }
     const d = c.travelMm / 1000;
     const flux = c.peakFluxMWb / 1000;
@@ -109,6 +110,7 @@ export function runModelTests(c = DEFAULT_CONFIG) {
   test("Motion peaks at configured displacement midpoint", () => Math.abs(motionAt(c.duration/2,0,c).x-c.travelMm/1000)<1e-12);
   test("Zero velocity yields zero induced emf", () => { const s=createState(c); advance(s,c,0.002); return s.emf===0; });
   test("Model stays finite during a full step", () => { const s=runSingleStep(c); return [s.t,s.vc,s.energy,s.losses,s.mechanicalWork].every(Number.isFinite); });
+  test("Applied force and compression produce positive input work", () => { const s=runSingleStep(c); return s.mechanicalWork > 0 && s.stepChanges[0].workJ > 0; });
   test("Capacitor voltage never exceeds its rating", () => { const s=createState({...c,initialVoltage:0}); runSingleStep({...c,initialVoltage:0},s); return s.vc<=c.rating; });
   test("Identical input produces deterministic state", () => { const a=runSingleStep(c), b=runSingleStep(c); return JSON.stringify(a)===JSON.stringify(b); });
   return results;
