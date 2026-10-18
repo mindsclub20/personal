@@ -67,7 +67,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/sketch" "$RUNNER_TEMP/vr-build" "$RUNNER_TEMP/vr-artifact"
           printf '%s' "$SKETCH_INPUT" > "$RUNNER_TEMP/sketch/sketch.ino"
           test -s "$RUNNER_TEMP/sketch/sketch.ino"
-          test "$(wc -c < "$RUNNER_TEMP/vr-sketch/sketch.ino")" -le 50000
+          test "$(wc -c < "$RUNNER_TEMP/sketch/sketch.ino")" -le 50000
           echo "request_id=$REQUEST_ID" >> "$GITHUB_OUTPUT"
           echo "board=$BOARD" >> "$GITHUB_OUTPUT"
 
