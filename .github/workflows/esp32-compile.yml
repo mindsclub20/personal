@@ -64,9 +64,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/vr-sketch" "$RUNNER_TEMP/vr-build" "$RUNNER_TEMP/vr-artifact"
-          printf '%s' "$SKETCH_INPUT" > "$RUNNER_TEMP/vr-sketch/sketch.ino"
-          test -s "$RUNNER_TEMP/vr-sketch/sketch.ino"
+          mkdir -p "$RUNNER_TEMP/sketch" "$RUNNER_TEMP/vr-build" "$RUNNER_TEMP/vr-artifact"
+          printf '%s' "$SKETCH_INPUT" > "$RUNNER_TEMP/sketch/sketch.ino"
+          test -s "$RUNNER_TEMP/sketch/sketch.ino"
           test "$(wc -c < "$RUNNER_TEMP/vr-sketch/sketch.ino")" -le 50000
           echo "request_id=$REQUEST_ID" >> "$GITHUB_OUTPUT"
           echo "board=$BOARD" >> "$GITHUB_OUTPUT"
@@ -76,7 +76,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          arduino-cli compile --verbose --fqbn "esp32:esp32:${{ inputs.board }}" --output-dir "$RUNNER_TEMP/vr-build" "$RUNNER_TEMP/vr-sketch" 2>&1 | tee "$RUNNER_TEMP/vr-artifact/build.log"
+          arduino-cli compile --verbose --fqbn "esp32:esp32:${{ inputs.board }}" --output-dir "$RUNNER_TEMP/vr-build" "$RUNNER_TEMP/sketch" 2>&1 | tee "$RUNNER_TEMP/vr-artifact/build.log"
 
       - name: Assemble flashable ESP32 firmware
         shell: bash
