@@ -1,0 +1,32 @@
+name: PowerMat model tests
+
+on:
+  pull_request:
+    paths:
+      - 'powermat-model.js'
+      - 'powermat-v4.html'
+      - 'tests/powermat-model.test.mjs'
+      - '.github/workflows/powermat-model-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'powermat-model.js'
+      - 'powermat-v4.html'
+      - 'tests/powermat-model.test.mjs'
+      - '.github/workflows/powermat-model-tests.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  model-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run deterministic model tests
+        run: node --experimental-default-type=module --test tests/powermat-model.test.mjs
