@@ -7,7 +7,7 @@ if(menuButton&&navLinks){
 }
 const year=document.querySelector("#year");if(year)year.textContent=String(new Date().getFullYear());
 
-// Safe arithmetic parser: supports decimals, parentheses and + - * / without eval().
+// Safe arithmetic parser: supports decimals, parentheses and + - * / without dynamic evaluation.
 function parseExpression(source){
   const tokens=source.replace(/\s+/g,"").match(/(?:\d*\.\d+|\d+\.?\d*|[()+\-*/])/g)||[];
   if(tokens.join("")!==source.replace(/\s+/g,""))throw new Error("Invalid expression");
