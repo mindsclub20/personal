@@ -89,3 +89,11 @@ Open `/visualrobotics-lab.html` from the authenticated dashboard.
 
 ### Private access and deployment
 The site middleware intentionally protects the dashboard and VisualRobotics page with the same owner session. The public homepage link redirects to owner login until a valid session exists. The login endpoint requires the Vercel environment variables `OWNER_USERNAME`, `OWNER_PASSWORD_HASH` (scrypt hash), and `SESSION_SECRET`. Never commit the plain password or secrets. If these variables are missing, login reports that configuration is unavailable.
+
+
+### VisualRobotics Lab / PowerMat V4 follow-up (2026-10-18)
+- **Run vs. Build:** “Run ESP32 + simulation” starts the in-browser teaching interpreter and does not require `GITHUB_ACTIONS_TOKEN`. “Build firmware (.bin)” is a separate native compile workflow and still requires the server-side token described above. Virtual GPIO/Serial values are software-only.
+- **Diagram export:** `diagram.json` now includes explicit Wokwi-format connections for the supported demo loop when an ESP32 DevKit, resistor, and LED are present: GPIO 2 → resistor → LED anode; LED cathode → GND. The resistor is represented as 220 Ω in the diagram. This is only a basic LED demonstration, not the PowerMat generator/rectifier/storage electrical model.
+- **Project export:** exported VisualRobotics project JSON includes the generated diagram alongside inventory and firmware.
+- **Persistence scope:** VisualRobotics has local project save/load and owner-authenticated Supabase cloud save/load. The standalone PowerMat simulator's “Save locally” button persists its numeric configuration only; it does not yet persist the complete simulation history to cloud.
+- **Validation boundaries:** these changes have not been verified against a physical ESP32, generator, rectifier, supercapacitor, or LED. Native firmware success must only be reported after the GitHub Actions job completes successfully and returns the binary artifact.
