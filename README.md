@@ -74,6 +74,7 @@ Open `/visualrobotics-lab.html` from the authenticated dashboard.
 - Editable bill of materials with INR estimates (illustrative, not live prices).
 - Starter Wokwi `diagram.json` export and separate manual handoff to Wokwi.
 - PowerMat V4 conceptual demonstration firmware and project inventory.
+- Dedicated responsive PowerMat V4 simulator page with deterministic mechanical/electromagnetic approximation, rectifier/capacitor/LED model, live charts, local configuration, CSV telemetry, editable BOM, and model tests.
 - Project/inventory validation and a limited in-browser virtual ESP32 interpreter for a documented Arduino subset; neither is native C++ compilation or electrical safety certification.
 
 ### Known limitations — do not mistake these for finished capabilities
@@ -83,6 +84,7 @@ Open `/visualrobotics-lab.html` from the authenticated dashboard.
 - Generated `diagram.json` is a starter layout with no generated wire connections. Add and verify wiring/pin mappings in the simulator.
 - The built-in Virtual ESP32 is a limited interpreter, not hardware-accurate simulation. A native compiler pipeline is now implemented in `.github/workflows/esp32-compile.yml`: GitHub Actions installs Arduino CLI + Espressif ESP32 core, compiles the submitted sketch, assembles a flashable merged `firmware.bin`, and retains diagnostics as a short-lived artifact. The authenticated API dispatches and polls those jobs. **One deployment configuration step remains:** add a fine-grained GitHub token as the encrypted Vercel environment variable `GITHUB_ACTIONS_TOKEN` for `mindsclub20/personal` with Actions read/write and Contents read, then redeploy. Without that secret the endpoint intentionally returns HTTP 503 rather than pretending to compile. The build path has not yet completed a live native build, so confirm it with a real sketch after configuration.
 - PowerMat V4 values are not real-world measurements. Never connect a generator/harvesting circuit directly to ESP32 pins without appropriate conditioning, voltage/current limits, and a verified circuit design.
+- The dedicated PowerMat V4 page is a simplified mathematical model. Its peak flux and cost inputs are assumptions, its loss accounting is partial, and it is not a hardware-accurate electromagnetic/mechanical simulation or a physical safety validation.
 
 ### Private access and deployment
 The site middleware intentionally protects the dashboard and VisualRobotics page with the same owner session. The public homepage link redirects to owner login until a valid session exists. The login endpoint requires the Vercel environment variables `OWNER_USERNAME`, `OWNER_PASSWORD_HASH` (scrypt hash), and `SESSION_SECRET`. Never commit the plain password or secrets. If these variables are missing, login reports that configuration is unavailable.
