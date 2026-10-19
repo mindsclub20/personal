@@ -3,7 +3,9 @@ export function createStepGate() {
   let lastCount = 0;
   return count => {
     const next = Number(count);
-    if (!Number.isInteger(next) || next < 0 || next <= lastCount) return 0;
+    if (!Number.isInteger(next) || next < 0) return 0;
+    if (next < lastCount) { lastCount = next; return 0; }
+    if (next === lastCount) return 0;
     const delta = next - lastCount;
     lastCount = next;
     return delta;
@@ -30,7 +32,7 @@ function init() {
   let lastFoot = -1, animationTimer = 0, mode = "manual";
   const gate = createStepGate();
   function animateStep(count) {
-    const which = count % 2;
+    const which = (count - 1) % 2;
     lastFoot = which;
     feet.forEach((foot, i) => {
       foot.classList.toggle("landing", i === which);
