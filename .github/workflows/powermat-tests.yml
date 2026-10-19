@@ -1,0 +1,27 @@
+name: PowerMat V4 model and interaction tests
+
+on:
+  push:
+    branches:
+      - main
+      - feat/enrose-powermat-interactive-lab
+  pull_request:
+    paths:
+      - "powermat-*.js"
+      - "powermat-v4.html"
+      - "tests/powermat-*.mjs"
+      - ".github/workflows/powermat-tests.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run PowerMat model and interaction tests
+        run: node --experimental-default-type=module --test tests/powermat-model.test.mjs tests/powermat-lab-ui.test.mjs
+      - name: Check HTML module integration markers
+        run: |
+          node --input-type=module -e "import fs from 'node:fs'; const html=fs.readFileSync('powermat-v4.html','utf8'); for (const marker of ['pmInteractiveMat','pmSaveExperiment','pmNotebookText','powermat-lab-ui.js','SIMULATED']) { if (!html.includes(marker)) throw new Error('Missing integration marker: '+marker); } console.log('PowerMat lab integration markers present.');"
