@@ -26,3 +26,12 @@ test("parts gallery draws inline component illustrations and expenditure uses cu
   assert.match(html, /project\.parts\.reduce/);
   assert.match(html, /data:image|<svg/);
 });
+
+
+test("simulator uses a focused engineering workspace instead of a crowded card stack", () => {
+  for (const cls of ["lab-shell", "lab-sidebar", "lab-workspace", "lab-inspector", "sim-dock", "lab-canvas-header"]) {
+    assert.match(html, new RegExp("class=\\"[^\\"]*\\b" + cls + "\\b"), "missing workspace class " + cls);
+  }
+  assert.match(html, /aria-label="Simulation controls"/);
+  assert.match(html, /@media\s*\(max-width:\s*900px\)/);
+});
