@@ -37,3 +37,28 @@ body:has(.lab-shell) .top,body:has(.lab-shell) .hero,body:has(.lab-shell) .card{
 body:has(.lab-shell) button{border-radius:9px}
 body:has(.lab-shell) button.primary{background:#18181b!important;border-color:#18181b!important;color:#fff!important}
 @media(max-width:700px){body:has(.lab-shell) .wrap{padding:10px}body:has(.lab-shell) .hero{align-items:flex-start}}
+
+/* Public entry and owner login receive the same restrained Studio Light finish. */
+body:has(.home){background:#fafafa!important;color:#18181b!important}
+body:has(.home) .home{width:min(100% - 32px,760px);padding:clamp(28px,6vw,64px);border:1px solid #e4e4e7;border-radius:24px;background:rgba(255,255,255,.92);box-shadow:0 24px 80px rgba(24,24,27,.06)}
+body:has(.home) .home h1{color:#18181b;letter-spacing:-.065em}
+body:has(.home) .home p{color:#71717a}
+body:has(.home) .home .link{background:#18181b;color:#fff;border:1px solid #18181b;box-shadow:none;border-radius:10px}
+body:has(.home) .home .link.secondary{background:#fff;color:#27272a;border-color:#e4e4e7}
+body:has(.home) .home .link:hover{background:#3f3f46;transform:translateY(-1px)}
+body:has(form#login){background:#f4f4f5!important;color:#18181b!important}
+body:has(form#login) .card{border:1px solid #e4e4e7;border-radius:18px;box-shadow:0 18px 60px rgba(24,24,27,.07);padding:clamp(22px,5vw,32px)}
+body:has(form#login) .mark{background:#18181b;border-radius:12px}
+body:has(form#login) .eyebrow{color:#71717a}
+body:has(form#login) h1{color:#18181b}
+body:has(form#login) p,body:has(form#login) footer{color:#71717a}
+body:has(form#login) input{border-color:#d4d4d8;border-radius:9px}
+body:has(form#login) input:focus{border-color:#71717a;box-shadow:0 0 0 3px #e4e4e7}
+body:has(form#login) button{background:#18181b;border-radius:9px}
+body:has(form#login) button:hover{background:#3f3f46}
+body:has(form#login) a{color:#3f3f46}
+@media(max-width:520px){
+  body:has(.home) .home{width:calc(100% - 24px);padding:28px 18px;border-radius:18px}
+  body:has(.home) .home .links{flex-direction:column}
+  body:has(.home) .home .link{width:100%}
+}
