@@ -7,6 +7,7 @@ on:
       - 'powermat-v4.html'
       - 'visualrobotics-lab.html'
       - 'tests/powermat-model.test.mjs'
+      - 'tests/visualrobotics-ui.test.mjs'
       - '.github/workflows/powermat-model-tests.yml'
   push:
     branches: [main]
@@ -14,6 +15,7 @@ on:
       - 'powermat-model.js'
       - 'powermat-v4.html'
       - 'tests/powermat-model.test.mjs'
+      - 'tests/visualrobotics-ui.test.mjs'
       - '.github/workflows/powermat-model-tests.yml'
 
 permissions:
@@ -42,4 +44,4 @@ jobs:
           PY
           node --check /tmp/visualrobotics-lab.mjs
       - name: Run deterministic model tests
-        run: node --experimental-default-type=module --test tests/powermat-model.test.mjs
+        run: node --experimental-default-type=module --test tests/powermat-model.test.mjs tests/visualrobotics-ui.test.mjs
