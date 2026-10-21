@@ -1,6 +1,14 @@
 /* Shyam Personal Toolbox — unified light workspace */
-:root{--ws-bg:#f4f4f5;--ws-panel:#fff;--ws-text:#18181b;--ws-muted:#71717a;--ws-line:#e4e4e7;--ws-accent:#18181b;--ws-accent-soft:#f4f4f5;--ws-sidebar:#f4f4f5;--ws-shadow:0 8px 28px rgba(24,24,27,.045);--ink:#18181b;--muted:#71717a;--line:#e4e4e7;--purple:#27272a;--purple-dark:#18181b;--lavender:#f4f4f5;--pale:#fafafa;--radius:14px;--shadow:0 8px 28px rgba(24,24,27,.045}
-html{scroll-behavior:smooth}body{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+:root{
+  --ws-bg:#f4f4f5;--ws-panel:#fff;--ws-text:#18181b;--ws-muted:#71717a;
+  --ws-line:#e4e4e7;--ws-accent:#18181b;--ws-accent-soft:#f4f4f5;
+  --ws-sidebar:#f4f4f5;--ws-shadow:0 8px 28px rgba(24,24,27,.045);
+  --ink:#18181b;--muted:#71717a;--line:#e4e4e7;--purple:#27272a;
+  --purple-dark:#18181b;--lavender:#f4f4f5;--pale:#fafafa;
+  --radius:14px;--shadow:0 8px 28px rgba(24,24,27,.045);
+}
+html{scroll-behavior:smooth}
+body{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
 button,a,input,textarea,select{transition:background-color .15s,border-color .15s,color .15s,box-shadow .15s}
 button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #a1a1aa;outline-offset:2px}
 .ws-app{grid-template-columns:260px minmax(0,1fr);background:var(--ws-bg)}
@@ -15,7 +23,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .ws-app button,.ws-app input,.ws-app textarea,.ws-app select{border-radius:9px}
 .ws-app button.primary,.ws-app .btn-primary{background:#18181b;color:white;border-color:#18181b}
 .ws-app button.primary:hover,.ws-app .btn-primary:hover{background:#3f3f46}
-@media(max-width:760px){.ws-app{grid-template-columns:minmax(0,1fr)}.ws-sidebar{z-index:100}.ws-main{min-width:0;width:100%}.ws-app button,.ws-app a{min-height:40px}.ws-app input,.ws-app textarea,.ws-app select{font-size:16px;max-width:100%}}
+@media(max-width:760px){
+  .ws-app{grid-template-columns:minmax(0,1fr)}
+  .ws-sidebar{z-index:100}
+  .ws-main{min-width:0;width:100%}
+  .ws-app button,.ws-app a{min-height:40px}
+  .ws-app input,.ws-app textarea,.ws-app select{font-size:16px;max-width:100%}
+}
 /* Consistent engineering surfaces; preserve circuit-specific SVG/canvas behavior. */
 .lab-shell,.lab-workspace,.lab-sidebar,.lab-inspector,.sim-dock{border-color:#e4e4e7!important;box-shadow:none!important}
 body:has(.lab-shell),body:has(.sim3d-stage){background:#f4f4f5!important;color:#18181b}
