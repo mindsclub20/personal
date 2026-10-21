@@ -42,9 +42,10 @@ function readCookie(request, name) {
 
 export default async function middleware(request) {
   const path = new URL(request.url).pathname;
-  // Only the public homepage and login endpoint bypass owner authentication.
-  // All private tools, including both robotics labs, use the same owner session.
-  if (path === "/" || path === "/login.html" || path === "/api/login") return;
+  // Public static assets must load on the public homepage and owner login.
+  // Keep HTML tools and all API routes behind the owner-session check.
+  const isStaticAsset = /\.(?:css|js|mjs|svg|png|jpe?g|gif|webp|avif|ico|woff2?|ttf|otf|eot)$/i.test(path);
+  if (path === "/" || path === "/login.html" || path === "/api/login" || isStaticAsset) return;
 
   const token = readCookie(request, "owner_session");
   if (await validSession(token, process.env.SESSION_SECRET)) return;
