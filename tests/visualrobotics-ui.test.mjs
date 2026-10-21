@@ -29,7 +29,7 @@ test("parts gallery draws inline component illustrations and expenditure uses cu
 
 
 test("simulator uses a focused engineering workspace instead of a crowded card stack", () => {
-  for (const marker of ['class="lab-shell"', 'class="lab-sidebar"', 'class="lab-workspace"', 'class="lab-inspector"', 'class="sim-dock"', 'class="lab-canvas-header"']) {
+  for (const marker of ['class="lab-shell"', 'class="lab-sidebar"', 'class="lab-workspace"', 'class="lab-inspector"', 'class="sim-dock"', 'class="row lab-canvas-header"']) {
     assert.ok(html.includes(marker), "missing workspace marker " + marker);
   }
   assert.ok(html.includes('aria-label="Simulation controls"'));
