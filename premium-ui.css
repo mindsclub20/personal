@@ -202,3 +202,11 @@ body:has(.matbox) .note{background:#fffbeb!important;color:#92400e!important;bor
 body:has(.matbox) .chart{background:#18181b!important}
 body:has(.matbox) .pill,body:has(.matbox) .pass{color:#047857!important}
 @media(max-width:560px){body:has(.matbox) header{padding:12px!important}body:has(.matbox) header .row{width:100%}body:has(.matbox) header .row button{flex:1}body:has(.matbox) .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Chat feedback states: visible waiting indicator and unmistakable errors */
+.ws-message.pending .ws-msg-content{display:flex;align-items:center;gap:9px;color:#71717a!important}
+.ws-message.pending .ws-msg-content::before{content:"";width:8px;height:8px;border-radius:50%;background:#71717a;box-shadow:12px 0 #a1a1aa,24px 0 #d4d4d8;display:inline-block;margin-right:22px;animation:studio-pulse 1.1s ease-in-out infinite}
+.ws-message.error .ws-msg-content{padding:10px 12px!important;border:1px solid #fecaca;border-radius:10px;background:#fef2f2;color:#991b1b!important;white-space:pre-wrap}
+@keyframes studio-pulse{0%,100%{opacity:.45;transform:translateY(0)}50%{opacity:1;transform:translateY(-2px)}}
+body.ws-dark .ws-message.error .ws-msg-content{background:#3b2024;border-color:#7f1d1d;color:#fecaca!important}
+@media(prefers-reduced-motion:reduce){.ws-message.pending .ws-msg-content::before{animation:none}}
