@@ -14,7 +14,7 @@ const app=document.createElement("div");app.className="ws-app";app.innerHTML=`
  </div><div class="ws-profile"><span class="ws-avatar">S</span><span><strong style="color:var(--ws-text);display:block">Personal workspace</strong><span>Local conversations</span></span></div>
 </aside>
 <section class="ws-main">
- <header class="ws-topbar"><div class="ws-top-left"><button class="ws-icon-btn ws-mobile-menu" id="ws-menu" aria-label="Open sidebar">☰</button><div class="ws-model">Engineering bench <small>Personal toolbox</small></div></div><div class="ws-top-actions"><button class="ws-icon-btn" id="ws-top-theme" title="Toggle light/dark theme" aria-label="Toggle theme">◐</button></div></header>
+ <header class="ws-topbar"><div class="ws-top-left"><button class="ws-icon-btn ws-mobile-menu" id="ws-menu" aria-label="Open sidebar">☰</button><button class="ws-collapse-btn" id="ws-collapse" type="button" title="Collapse sidebar" aria-label="Collapse sidebar" aria-expanded="true">◧</button><div class="ws-model">Engineering bench <small>Personal toolbox</small></div></div><div class="ws-top-actions"><button class="ws-icon-btn" id="ws-top-theme" title="Toggle light/dark theme" aria-label="Toggle theme">◐</button></div></header>
  <div class="ws-chat-scroll" id="ws-chat-scroll"><div class="ws-chat-inner" id="ws-chat-inner">
  <section class="ws-welcome" id="ws-welcome"><div class="ws-orb">✳</div><h1>What are we working on?</h1><p>Your personal AI-style workspace for learning, coding, creating, and getting things done.</p>
  <div class="ws-suggestions">
@@ -99,7 +99,7 @@ async function sendMessage(text){
 function resizeComposer(){const el=$("#ws-composer");el.style.height="auto";el.style.height=Math.min(el.scrollHeight,160)+"px";$("#ws-send").disabled=!el.value.trim()}
 $("#ws-form").addEventListener("submit",e=>{e.preventDefault();sendMessage($("#ws-composer").value)});
 $("#ws-composer").addEventListener("input",resizeComposer);$("#ws-composer").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage($("#ws-composer").value)}});
-$("#ws-new").addEventListener("click",newChat);$("#ws-menu").addEventListener("click",()=>app.classList.toggle("sidebar-open"));
+$("#ws-new").addEventListener("click",newChat);$("#ws-menu").addEventListener("click",()=>app.classList.toggle("sidebar-open"));$("#ws-collapse").addEventListener("click",()=>{const collapsed=app.classList.toggle("sidebar-collapsed");$("#ws-collapse").setAttribute("aria-expanded",String(!collapsed));$("#ws-collapse").setAttribute("aria-label",collapsed?"Expand sidebar":"Collapse sidebar");$("#ws-collapse").title=collapsed?"Expand sidebar":"Collapse sidebar";$("#ws-collapse").textContent=collapsed?"▣":"◧";});
 $("#ws-theme").addEventListener("click",toggleTheme);$("#ws-top-theme").addEventListener("click",toggleTheme);
 function toggleTheme(){document.body.classList.toggle("ws-dark");try{localStorage.setItem(themeKey,document.body.classList.contains("ws-dark")?"dark":"light")}catch{}}
 $("#ws-add-tool").addEventListener("click",()=>showView("tools"));$("#ws-back-chat").addEventListener("click",()=>showView("chat"));$$("[data-view]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.view)));
