@@ -284,3 +284,127 @@ body:has(form#login) button{background:linear-gradient(135deg,#365fe8,#4b59d9)!i
  .tool-card{min-width:0}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
+
+
+/* Cross-device compatibility layer — phones, tablets, desktops, TVs and interactive panels.
+   Additive by design: keeps existing page layouts and tool behavior intact. */
+:root { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+html { min-width: 0; width: 100%; scroll-padding-top: 76px; }
+body { min-width: 0; max-width: 100%; overflow-x: clip; }
+img, video, canvas, svg, iframe { max-width: 100%; }
+img, video { height: auto; }
+button, input, select, textarea { font: inherit; }
+button, [role="button"], a, input, select, textarea, summary {
+  touch-action: manipulation;
+}
+input, textarea, select { max-width: 100%; }
+pre, code, pre *, .code, .output, .console { overflow-wrap: anywhere; }
+table { max-width: 100%; }
+:where(main, section, article, aside, header, footer, nav, div, form) { min-width: 0; }
+:where(.shell, .wrap, .container, .page, .content, main) {
+  width: min(100% - 32px, 1440px);
+  margin-inline: auto;
+}
+:where(.grid, .tool-grid, .cards, .metrics, .stats, .layout, .workspace-grid) > * {
+  min-width: 0;
+}
+:where(.tool, .tool-card, .card, .panel, .ws-panel, .mini, .metric) {
+  overflow-wrap: anywhere;
+}
+:where(button, .btn, a.button, input[type="button"], input[type="submit"]) {
+  min-height: 42px;
+}
+:where(input, select, textarea) { font-size: max(16px, 1em); }
+:where(textarea) { resize: vertical; }
+:where(.table-wrap, .table-responsive, .overflow-x, .code-wrap) {
+  max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain;
+}
+:where(.hero, .section-head, .top-inner, .bottom-inner, .row, .toolbar) {
+  flex-wrap: wrap;
+}
+:where(.hero, .grid, .tool-grid, .metrics, .stats, .layout) {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+}
+:where(.ws-app, .lab-shell, .lab-workspace, .sim-dock) {
+  max-width: 100%; min-height: 0;
+}
+:where(.ws-main, .ws-content, .ws-workspace, .ws-chat-scroll, .ws-tool-view) {
+  min-width: 0; max-width: 100%;
+}
+:where(.ws-chat-scroll, main, .page-content) {
+  overscroll-behavior-y: contain;
+}
+:focus-visible { scroll-margin-block: 90px; }
+@media (max-width: 900px) {
+  :where(.shell, .wrap, .container, .page, .content, main) {
+    width: min(100% - 28px, 1440px);
+  }
+  :where(.hero, .workspace, .main-grid, .layout, .grid) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  :where(.section-head, .top-inner, .toolbar) { gap: 12px; }
+  :where(.table-wrap, .table-responsive) { overflow-x: auto; }
+  :where(.lab-shell, .lab-workspace) { max-width: 100%; overflow-x: auto; }
+}
+@media (max-width: 600px) {
+  html { scroll-padding-top: 64px; }
+  :where(.shell, .wrap, .container, .page, .content, main) {
+    width: calc(100% - 24px);
+  }
+  :where(.top-inner, .top-actions, .hero-actions, .actions, .toolbar) {
+    gap: 8px;
+  }
+  :where(.top-actions, .hero-actions, .actions) > .btn {
+    max-width: 100%;
+  }
+  :where(.hero h1, h1) { overflow-wrap: anywhere; }
+  :where(.tool-grid, .cards, .metrics, .stats) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  :where(.ws-topbar) { padding-inline: 10px !important; }
+  :where(.ws-composer, .ws-composer-box) { max-width: 100%; }
+  :where(.ws-composer) { font-size: 16px !important; }
+  :where(.lab-sidebar, .lab-inspector, .sim-dock) { max-width: 100%; }
+  :where(.metrics) { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  :where(.bottom-inner) { align-items: flex-start; }
+}
+@media (max-width: 380px) {
+  :where(.shell, .wrap, .container, .page, .content, main) {
+    width: calc(100% - 18px);
+  }
+  :where(.top-actions .btn) { padding-inline: 8px; font-size: 12px; }
+  :where(.card, .panel, .tool, .tool-card) { padding: 12px !important; }
+  :where(.metrics) { grid-template-columns: minmax(0, 1fr) !important; }
+}
+@media (min-width: 1400px) {
+  body { font-size: 17px; }
+  :where(.shell, .wrap, .container, .page, .content) { max-width: 1600px; }
+  :where(button, .btn, a.button) { min-height: 46px; }
+}
+@media (min-width: 1800px) {
+  body { font-size: 18px; }
+  :where(.hero h1, h1) { max-width: 1100px; }
+}
+@media (hover: none), (pointer: coarse) {
+  :where(button, a, [role="button"], input[type="checkbox"], input[type="radio"]) {
+    -webkit-tap-highlight-color: transparent;
+  }
+  :where(button, .btn, a.button) { min-height: 44px; }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  :where(.hero) { padding-block: 18px !important; }
+  :where(.ws-chat-scroll) { padding-top: 12px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+@media (forced-colors: active) {
+  :where(button, a, input, textarea, select, .card, .panel) {
+    border: 1px solid ButtonText;
+  }
+}
