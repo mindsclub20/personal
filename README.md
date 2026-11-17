@@ -1,6 +1,6 @@
-# Shyam's Personal Toolbox
+# Shyam Personal — Robotics, Electronics & Python Bench
 
-A responsive, lavender-themed collection of useful browser tools.
+A private learning and engineering workspace focused on robotics, electronics fundamentals, and Python programming. It combines the existing browser tools, VisualRobotics workspace, Python lab, a robotics learning planner, and optional browser-local AI.
 
 ## Features
 - Quick links to official ChatGPT, Google Gemini, and Claude websites (API integration is not enabled yet).
@@ -10,6 +10,8 @@ A responsive, lavender-themed collection of useful browser tools.
 - Live word/character count and estimated reading time.
 - Length, weight, and temperature converter.
 - 25-minute focus timer.
+- Robotics, Electronics & Python daily planner with quick-add tasks for each learning track.
+- Optional browser-local Qwen2.5-Coder 0.5B assistant using WebLLM and WebGPU. Model inference runs in the browser; no Gemini/Groq/OpenAI inference API or user API key is used by this chat.
 
 ## Run locally
 Open `index.html` in a browser, or start a local static server:
@@ -20,14 +22,19 @@ python -m http.server 8000
 
 Then visit `http://localhost:8000`.
 
-## Privacy and API readiness
-- The site does not call AI APIs or ask for API keys.
+## Privacy and local AI
+- The local AI chat runs inference in the browser with WebLLM/WebGPU. It does not send chat prompts to a hosted AI inference API.
+- First use downloads the WebLLM runtime and approximately 1 GB of model files; an internet connection is required for this initial setup. WebLLM caches model assets in the browser for later use. Actual performance depends on the device and WebGPU support.
+- The current chat history is saved in this browser's local storage. It is not synced to Supabase or other devices.
 - Notes use browser local storage on the current device. Avoid entering passwords or sensitive data.
 - File conversion runs in the browser and does not upload your files. PDF pages are rendered as images during conversion; this prioritizes appearance over selectable text.
-- If AI APIs are added later, route requests through a backend and store provider keys in server-side environment variables. Never place secret API keys in client-side JavaScript.
+- Other external AI website shortcuts are links only; they are separate from the local model chat.
+
+## Checks
+Run the browser-local AI unit tests with `node --test tests/local-llm.test.mjs`. Check JavaScript syntax with `node --check workspace.js` and `node --check local-llm.js`.
 
 ## Deployment
-This is a static site suitable for Vercel. No database or environment variables are required for current features.
+This is a static site suitable for Vercel. The browser-local model requires WebGPU and an initial download; it does not require a Supabase project or server-side inference secrets.
 
 
 ### File converter limits
