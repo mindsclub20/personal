@@ -1,4 +1,4 @@
-export const LOCAL_MODEL_ID = "Qwen2.5-Coder-0.5B-Instruct-q4f32_1-MLC";
+export const LOCAL_MODEL_ID = "Qwen2.5-Coder-0.5B-Instruct-q4f16_1-MLC";
 export const LOCAL_MODEL_NAME = "Qwen2.5 Coder 0.5B (browser-local)";
 export const LOCAL_MODEL_DOWNLOAD = "about 1 GB";
 
