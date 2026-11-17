@@ -17,23 +17,22 @@ test("refuses to initialize when WebGPU is unavailable", async () => {
 
 test("initializes the selected model and forwards progress", async () => {
   let selectedModel = "";
-  let progressCallback;
+  let progress;
   const expectedEngine = { ready: true };
   const engine = await createLocalEngine({
     environment: { navigator: { gpu: {} } },
     importer: async () => ({
       CreateMLCEngine: async (model, options) => {
         selectedModel = model;
-        progressCallback = options.initProgressCallback;
+        options.initProgressCallback({ text: "Loading weights", progress: 0.5 });
         return expectedEngine;
       },
     }),
-    onProgress: (value) => { progressCallback.lastProgress = value; },
+    onProgress: (value) => { progress = value; },
   });
   assert.equal(engine, expectedEngine);
   assert.equal(selectedModel, LOCAL_MODEL_ID);
-  progressCallback({ text: "Loading weights", progress: 0.5 });
-  assert.equal(progressCallback.lastProgress, undefined);
+  assert.deepEqual(progress, { text: "Loading weights", progress: 0.5 });
 });
 
 test("generates a reply using system and recent conversation messages", async () => {
