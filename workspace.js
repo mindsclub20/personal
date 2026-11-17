@@ -2,7 +2,7 @@
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const app=document.createElement("div");app.className="ws-app";app.innerHTML=`
 <aside class="ws-sidebar" aria-label="Workspace navigation">
- <div class="ws-brand"><span class="ws-mark">✳</span><span>Shyam Tool Bench</span></div>
+ <div class="ws-brand"><span class="ws-mark">✳</span><span>Shyam Personal</span></div>
  <button class="ws-new" id="ws-new"><span class="ws-nav-icon">＋</span> New chat <span style="margin-left:auto;color:var(--ws-muted)">⌘K</span></button>
  <button class="ws-nav-btn active" data-view="chat"><span class="ws-nav-icon">◫</span> Chat</button>
  <button class="ws-nav-btn" data-view="tools"><span class="ws-nav-icon">▦</span> All tools</button>
@@ -14,17 +14,17 @@ const app=document.createElement("div");app.className="ws-app";app.innerHTML=`
  </div><div class="ws-profile"><span class="ws-avatar">S</span><span><strong style="color:var(--ws-text);display:block">Personal workspace</strong><span>Local conversations</span></span></div>
 </aside>
 <section class="ws-main">
- <header class="ws-topbar"><div class="ws-top-left"><button class="ws-icon-btn ws-mobile-menu" id="ws-menu" aria-label="Open sidebar">☰</button><button class="ws-collapse-btn" id="ws-collapse" type="button" title="Collapse sidebar" aria-label="Collapse sidebar" aria-expanded="true">◧</button><div class="ws-model">Engineering bench <small>Personal toolbox</small></div></div><div class="ws-top-actions"><button class="ws-icon-btn" id="ws-top-theme" title="Toggle light/dark theme" aria-label="Toggle theme">◐</button></div></header>
+ <header class="ws-topbar"><div class="ws-top-left"><button class="ws-icon-btn ws-mobile-menu" id="ws-menu" aria-label="Open sidebar">☰</button><button class="ws-collapse-btn" id="ws-collapse" type="button" title="Collapse sidebar" aria-label="Collapse sidebar" aria-expanded="true">◧</button><div class="ws-model">Robotics, Electronics &amp; Python Bench <small>Shyam Personal</small></div></div><div class="ws-top-actions"><button class="ws-icon-btn" id="ws-top-theme" title="Toggle light/dark theme" aria-label="Toggle theme">◐</button></div></header>
  <div class="ws-chat-scroll" id="ws-chat-scroll"><div class="ws-chat-inner" id="ws-chat-inner">
- <section class="ws-welcome" id="ws-welcome"><div class="ws-orb">✳</div><h1>What are we working on?</h1><p>Your personal AI-style workspace for learning, coding, creating, and getting things done.</p>
+ <section class="ws-welcome" id="ws-welcome"><div class="ws-orb">✳</div><h1>Your Robotics, Electronics &amp; Python Bench</h1><p>One workspace for robotics learning, electronics concepts, Python practice, and building intelligent projects.</p>
  <div class="ws-suggestions">
- <button class="ws-suggestion" data-prompt="Help me plan a focused 30-minute study session."><span class="ws-s-icon">◷</span><span><strong>Plan a study session</strong><small>Make a practical plan with a clear next step</small></span></button>
- <button class="ws-suggestion" data-prompt="Give me a small Python project idea for robotics practice."><span class="ws-s-icon">⌘</span><span><strong>Build with Python</strong><small>Pick a mini-project to practise coding</small></span></button>
- <button class="ws-suggestion" data-prompt="Help me brainstorm a robotics engineering project."><span class="ws-s-icon">✧</span><span><strong>Explore an idea</strong><small>Turn a rough idea into useful steps</small></span></button>
+ <button class="ws-suggestion" data-prompt="Plan a 30-minute robotics, electronics, or Python study session with one clear learning goal."><span class="ws-s-icon">◷</span><span><strong>Plan bench practice</strong><small>Set a focused robotics or Python session</small></span></button>
+ <button class="ws-suggestion" data-prompt="Give me a beginner-friendly Python project related to robotics, with steps and a test."><span class="ws-s-icon">⌘</span><span><strong>Python practice</strong><small>Build a small robotics coding project</small></span></button>
+ <button class="ws-suggestion" data-prompt="Explain an electronics concept used in robotics with a safe beginner example."><span class="ws-s-icon">✧</span><span><strong>Electronics concepts</strong><small>Understand sensors, circuits, and control</small></span></button>
  <button class="ws-suggestion" data-view="tools"><span class="ws-s-icon">▦</span><span><strong>Open my toolbox</strong><small>Calculator, Python, files, notes, and more</small></span></button>
  </div></section><div class="ws-messages" id="ws-messages"></div></div></div>
- <section class="ws-tool-view" id="ws-tool-view"><div class="ws-tool-head"><div><h2>Engineering workspace</h2><p>Choose a tool for coding, productivity, robotics ideas, or network diagnostics.</p></div><button class="ws-back-chat" id="ws-back-chat">← Back to chat</button></div><div class="ws-tool-grid" id="ws-tool-grid"></div></section>
- <footer class="ws-composer-wrap" id="ws-composer-wrap"><form class="ws-composer-box" id="ws-form"><textarea class="ws-composer" id="ws-composer" rows="1" maxlength="8000" placeholder="Message your workspace…" aria-label="Write a message"></textarea><div class="ws-composer-tools"><div class="ws-composer-left"><button class="ws-composer-tool" type="button" id="ws-add-tool">＋ Tools</button><button class="ws-composer-tool" type="button" id="ws-focus-prompt">✧ Help me focus</button></div><div class="ws-composer-right"><span style="font-size:10px;color:var(--ws-muted);padding-right:5px">Enter to send</span><button class="ws-send" id="ws-send" type="submit" aria-label="Send message" disabled>↑</button></div></div></form><p class="ws-disclaimer">Powered by Google Gemini. Sign in through Owner login to send messages; the API key stays on the server.</p></footer>
+ <section class="ws-tool-view" id="ws-tool-view"><div class="ws-tool-head"><div><h2>Robotics, Electronics &amp; Python Bench</h2><p>Use the tools for Python practice, electronics learning, robotics planning, and engineering projects.</p></div><button class="ws-back-chat" id="ws-back-chat">← Back to chat</button></div><div class="ws-tool-grid" id="ws-tool-grid"></div></section>
+ <footer class="ws-composer-wrap" id="ws-composer-wrap"><form class="ws-composer-box" id="ws-form"><textarea class="ws-composer" id="ws-composer" rows="1" maxlength="8000" placeholder="Message your workspace…" aria-label="Write a message"></textarea><div class="ws-composer-tools"><div class="ws-composer-left"><button class="ws-composer-tool" type="button" id="ws-add-tool">＋ Tools</button><button class="ws-composer-tool" type="button" id="ws-focus-prompt">✧ Help me focus</button><button class="ws-composer-tool" type="button" id="ws-load-model">Load local AI</button></div><div class="ws-composer-right"><span style="font-size:10px;color:var(--ws-muted);padding-right:5px">Enter to send</span><button class="ws-send" id="ws-send" type="submit" aria-label="Send message" disabled>↑</button></div></div></form><div class="ws-local-model-bar"><span class="ws-local-dot" aria-hidden="true"></span><span id="ws-model-status" role="status">Local model not loaded · WebGPU required · first download about 1 GB</span></div><p class="ws-disclaimer">AI inference runs in this browser. The model is downloaded once and cached on this device; chats remain in this browser.</p></footer>
 </section></div>`;
 document.body.append(app);
 const originalTools=$(".tools-layout");
@@ -43,58 +43,49 @@ function openChat(id){currentId=id;renderHistory();renderMessages();showView("to
 function newChat(){currentId=null;renderHistory();renderMessages();$("#ws-composer").value="";$("#ws-composer").focus();showView("chat")}
 function addMessage(role,text){let c=active();if(!c){c={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),title:text.slice(0,44)+(text.length>44?"…":""),messages:[],updated:Date.now()};conversations.unshift(c);currentId=c.id}c.messages.push({role,text});c.updated=Date.now();conversations.sort((a,b)=>b.updated-a.updated);persist();renderHistory();renderMessages()}
 function showView(view){const isTools=view==="tools";$("#ws-tool-view").classList.toggle("open",isTools);$("#ws-chat-scroll").style.display=isTools?"none":"block";$("#ws-composer-wrap").style.display=isTools?"none":"block";$$("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===view));app.classList.remove("sidebar-open")}
-let sendingToGemini=false;
+let localEngine=null,localLLMModule=null,loadingLocalModel=false,sendingLocalMessage=false;
+const LOCAL_SYSTEM_PROMPT="You are Shyam Personal, an educational assistant for a student learning robotics engineering, electronics, and Python. Explain concepts accurately in clear, age-appropriate language. Prioritize safe, low-voltage beginner electronics and responsible robotics practice. Teach step by step, encourage testing and debugging, and distinguish facts from uncertainty. Do not claim to access the internet, files, hardware, or live data unless a connected tool actually provides it.";
+function setLocalModelStatus(message,isReady=false){const status=$("#ws-model-status");if(status)status.textContent=message;const dot=$(".ws-local-dot");if(dot){dot.classList.toggle("ready",isReady);dot.classList.toggle("busy",loadingLocalModel)}}
+async function loadLocalModel(){
+ if(localEngine||loadingLocalModel)return localEngine;
+ if(!navigator.gpu){setLocalModelStatus("WebGPU is unavailable in this browser. Try an up-to-date Chrome or Edge browser on a supported device.");throw new Error("This browser or device does not currently support WebGPU local inference.");}
+ loadingLocalModel=true;const button=$("#ws-load-model");if(button){button.disabled=true;button.textContent="Loading…"}
+ setLocalModelStatus("Preparing the local AI runtime…");
+ try{
+  if(!localLLMModule)localLLMModule=await import("./local-llm.js");
+  localEngine=await localLLMModule.createLocalEngine({onProgress:progress=>setLocalModelStatus(progress.text||"Downloading model…")});
+  setLocalModelStatus("Local model ready · running on this device",true);
+  if(button)button.textContent="Local AI ready";
+  return localEngine;
+ }catch(error){
+  setLocalModelStatus("Model could not load · "+(error.message||"Check WebGPU and internet access"));
+  if(button){button.disabled=false;button.textContent="Retry local AI"}
+  throw error;
+ }finally{loadingLocalModel=false;if(button&&localEngine)button.disabled=true;}
+}
+$("#ws-load-model").addEventListener("click",()=>loadLocalModel().catch(error=>{console.warn("Local model initialization failed:",error)}));
 async function sendMessage(text){
  const v=(text||"").trim();
- if(!v||sendingToGemini)return;
- $("#ws-composer").value="";
- resizeComposer();
- addMessage("user",v);
- const conversation=active();
- if(!conversation)return;
- const conversationId=conversation.id;
- const pendingText="Thinking with Gemini…";
- addMessage("assistant",pendingText);
- sendingToGemini=true;
- resizeComposer();
+ if(!v||sendingLocalMessage)return;
+ if(!localEngine){
+  addMessage("assistant","Load the local AI model first using the “Load local AI” button. Its first download is about 1 GB and requires an internet connection. After caching, the model can be reused on this device.");
+  return;
+ }
+ $("#ws-composer").value="";resizeComposer();addMessage("user",v);
+ const conversation=active();if(!conversation)return;
+ const conversationId=conversation.id;const pendingText="Generating locally on this device…";
+ addMessage("assistant",pendingText);sendingLocalMessage=true;resizeComposer();
  try{
   const target=conversations.find(c=>c.id===conversationId);
-  const history=(target?target.messages:[])
-   .filter(m=>!(m.role==="assistant"&&m.text===pendingText))
-   .slice(-12)
-   .map(m=>({role:m.role,text:m.text}));
+  const history=(target?target.messages:[]).filter(m=>!(m.role==="assistant"&&m.text===pendingText)).slice(-12).map(m=>({role:m.role,content:m.text}));
   while(history.length&&history[0].role==="assistant")history.shift();
-  const response=await fetch("/api/chat",{
-   method:"POST",
-   headers:{"Content-Type":"application/json"},
-   credentials:"same-origin",
-   body:JSON.stringify({messages:history})
-  });
-  const data=await response.json().catch(()=>({}));
-  if(!response.ok)throw new Error(data.error||"Gemini could not answer. Please try again.");
+  const reply=await localLLMModule.generateLocalReply(localEngine,history,LOCAL_SYSTEM_PROMPT);
   const current=conversations.find(c=>c.id===conversationId);
-  if(current){
-   const index=current.messages.findIndex(m=>m.role==="assistant"&&m.text===pendingText);
-   if(index!==-1)current.messages[index].text=String(data.reply||"Gemini returned an empty reply.");
-   current.updated=Date.now();
-   persist();
-   renderHistory();
-   if(currentId===conversationId)renderMessages();
-  }
+  if(current){const index=current.messages.findIndex(m=>m.role==="assistant"&&m.text===pendingText);if(index!==-1)current.messages[index].text=reply||"The local model returned an empty response.";current.updated=Date.now();persist();renderHistory();if(currentId===conversationId)renderMessages();}
  }catch(error){
   const current=conversations.find(c=>c.id===conversationId);
-  if(current){
-   const index=current.messages.findIndex(m=>m.role==="assistant"&&m.text===pendingText);
-   if(index!==-1)current.messages[index].text="⚠ "+(error.message||"Could not reach Gemini. Please try again.");
-   current.updated=Date.now();
-   persist();
-   renderHistory();
-   if(currentId===conversationId)renderMessages();
-  }
- }finally{
-  sendingToGemini=false;
-  resizeComposer();
- }
+  if(current){const index=current.messages.findIndex(m=>m.role==="assistant"&&m.text===pendingText);if(index!==-1)current.messages[index].text="⚠ "+(error.message||"Local generation failed. Try loading the model again.");current.updated=Date.now();persist();renderHistory();if(currentId===conversationId)renderMessages();}
+ }finally{sendingLocalMessage=false;resizeComposer();}
 }
 function resizeComposer(){const el=$("#ws-composer");el.style.height="auto";el.style.height=Math.min(el.scrollHeight,160)+"px";$("#ws-send").disabled=!el.value.trim()}
 $("#ws-form").addEventListener("submit",e=>{e.preventDefault();sendMessage($("#ws-composer").value)});
