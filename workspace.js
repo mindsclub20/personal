@@ -157,7 +157,7 @@ function installDailyPlanner(){
  $("#ws-add-today").addEventListener("click",()=>{
   if(today===0){const note=$("#ws-schedule-note");note.textContent="Sunday is reserved for rest or optional review; no tasks were added.";return;}
   const blocks=["7:00–7:05 PM · Review yesterday’s concepts","7:05–7:20 PM · "+weeklyTopics[today],"7:20–7:30 PM · Complete one practice question or mini-exercise"];
-  const prefix=new Date().toISOString().slice(0,10);
+  const localDate=new Date();const prefix=[localDate.getFullYear(),String(localDate.getMonth()+1).padStart(2,"0"),String(localDate.getDate()).padStart(2,"0")].join("-");
   blocks.forEach((text,index)=>{const taskText=prefix+" · "+text;if(!tasks.some(t=>t.text===taskText))tasks.unshift({id:Date.now().toString(36)+index+Math.random().toString(36).slice(2,5),text:taskText,done:false})});
   save();draw();$("#ws-schedule-note").textContent="Today’s 30-minute session has been added to your task list.";
  });
