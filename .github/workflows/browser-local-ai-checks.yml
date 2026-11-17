@@ -22,4 +22,4 @@ jobs:
           node --check workspace.js
           node --check local-llm.js
       - name: Run local AI tests
-        run: node --test tests/local-llm.test.mjs
+        run: node --test tests/*.test.mjs
