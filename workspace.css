@@ -155,3 +155,13 @@ body.ws-dark .ws-sidebar{background:var(--ws-sidebar)}body.ws-dark .ws-command-o
 body.ws-dark .ws-app{background-image:linear-gradient(rgba(182,168,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(182,168,255,.04) 1px,transparent 1px)}
 body.ws-dark .ws-sidebar,body.ws-dark .ws-topbar{background:rgba(29,26,39,.96);border-color:var(--ws-line)}
 @media(max-width:760px){.ws-sidebar{backdrop-filter:none}.ws-suggestion:hover{transform:none}}
+
+/* Local browser AI status and learning-track planner */
+.ws-local-model-bar{display:flex;align-items:center;gap:9px;max-width:820px;margin:7px auto 0;padding:0 12px;font-size:11px;line-height:1.5;color:var(--ws-muted)}
+.ws-local-dot{width:8px;height:8px;flex:0 0 8px;border-radius:50%;background:#a1a1aa}
+.ws-local-dot.ready{background:#16a34a;box-shadow:0 0 0 3px #16a34a20}
+.ws-local-dot.busy{background:#d97706;box-shadow:0 0 0 3px #d9770620}
+.ws-planner-presets{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.ws-planner-presets button{min-height:34px;padding:6px 11px;border:1px solid var(--ws-line);border-radius:9px;background:var(--ws-panel);color:var(--ws-text);font:inherit;font-size:12px;cursor:pointer}
+.ws-planner-presets button:hover{border-color:#a1a1aa;background:var(--ws-hover)}
+@media(max-width:520px){.ws-local-model-bar{padding:0 4px;font-size:10px}.ws-planner-presets button{flex:1}}
