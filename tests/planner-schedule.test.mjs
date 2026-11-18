@@ -31,3 +31,11 @@ test("scheduled research is clearly separated from the browser study planner", (
   assert.ok(workspace.includes("The external research task currently starts at the same clock time as the study session"));
   assert.ok(workspace.includes("it is not triggered by this page and does not count as study time"));
 });
+
+test("planner date, weekday, and task labels use India Standard Time", () => {
+  assert.ok(workspace.includes('timeZone:"Asia/Kolkata"'));
+  assert.ok(workspace.includes("const getIndiaDay=()=>"));
+  assert.ok(workspace.includes("const parts=indiaDateParts()"));
+  assert.ok(!workspace.includes("const today=new Date().getDay()"));
+  assert.ok(!workspace.includes("localDate.getFullYear()"));
+});
