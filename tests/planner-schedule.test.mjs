@@ -39,3 +39,7 @@ test("planner date, weekday, and task labels use India Standard Time", () => {
   assert.ok(!workspace.includes("const today=new Date().getDay()"));
   assert.ok(!workspace.includes("localDate.getFullYear()"));
 });
+
+test("Thursday includes the core serial communication interfaces", () => {
+  assert.ok(workspace.includes("serial communication (I²C, SPI, UART)"));
+});
