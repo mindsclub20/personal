@@ -149,15 +149,18 @@ function installDailyPlanner(){
  const storageKey="shyam-daily-planner-v1";
  let tasks=[];try{tasks=JSON.parse(localStorage.getItem(storageKey)||"[]");if(!Array.isArray(tasks))tasks=[]}catch{tasks=[]}
  const save=()=>{try{localStorage.setItem(storageKey,JSON.stringify(tasks))}catch{}};
- $("#ws-planner-date").textContent=new Intl.DateTimeFormat(undefined,{weekday:"long",month:"short",day:"numeric"}).format(new Date());
+ const indiaDateFormatter=new Intl.DateTimeFormat("en-IN",{timeZone:"Asia/Kolkata",weekday:"long",month:"short",day:"numeric"});
+ const indiaDateParts=()=>Object.fromEntries(new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Kolkata",weekday:"short",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date()).map(part=>[part.type,part.value]));
+ const getIndiaDay=()=>({Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6})[indiaDateParts().weekday];
+ $("#ws-planner-date").textContent=indiaDateFormatter.format(new Date());
  const weeklyTopics={1:"Volume 1 — Robotics Fundamentals: robot systems, components, sensors and motion",2:"Volume 2 — Electronics for Robotics: voltage, current, components, circuits and sensor interfaces",3:"Volume 3 — Mechanical Robotics: chassis, gears, mechanisms, motion and basic kinematics",4:"Volume 4 — LEGO Mindstorms EV3 and Arduino Robotics: controllers, motors, sensors and programming concepts",5:"Volume 5 — Autonomous Robotics: sensing, feedback, localization and decision logic",6:"Integration and review — connect all five volumes; use Python for a small robotics-related exercise",0:"Rest or optional review — no compulsory new lesson"};
- const today=new Date().getDay();
+ const today=getIndiaDay();
  $(".ws-weekly-days li").forEach(item=>item.classList.toggle("today",Number(item.dataset.scheduleDay)===today));
  $("#ws-schedule-note").textContent=today===0?"Today is a rest day. Use it for optional weekly review.":"Today’s focus: "+weeklyTopics[today]+". Target time: 7:00–7:30 PM IST.";
  $("#ws-add-today").addEventListener("click",()=>{
   if(today===0){const note=$("#ws-schedule-note");note.textContent="Sunday is reserved for rest or optional review; no tasks were added.";return;}
   const blocks=["7:00–7:05 PM · Review yesterday’s concepts","7:05–7:20 PM · "+weeklyTopics[today],"7:20–7:30 PM · Complete one practice question or mini-exercise"];
-  const localDate=new Date();const prefix=[localDate.getFullYear(),String(localDate.getMonth()+1).padStart(2,"0"),String(localDate.getDate()).padStart(2,"0")].join("-");
+  const parts=indiaDateParts();const prefix=`${parts.year}-${parts.month}-${parts.day}`;
   blocks.forEach((text,index)=>{const taskText=prefix+" · "+text;if(!tasks.some(t=>t.text===taskText))tasks.unshift({id:Date.now().toString(36)+index+Math.random().toString(36).slice(2,5),text:taskText,done:false})});
   save();draw();$("#ws-schedule-note").textContent="Today’s 30-minute session has been added to your task list.";
  });
