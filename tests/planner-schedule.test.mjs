@@ -41,5 +41,5 @@ test("planner date, weekday, and task labels use India Standard Time", () => {
 });
 
 test("Thursday includes the core serial communication interfaces", () => {
-  assert.ok(workspace.includes("serial communication (I²C, SPI, UART)"));
+  assert.ok(workspace.includes("serial communication (I²C, SPI, UART), including address limits and board-specific datasheet checks"));
 });
