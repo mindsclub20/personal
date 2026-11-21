@@ -53,5 +53,11 @@ test("EV3 Classroom remains the school default and EV3 MicroPython is optional",
 test("Volume 4 keeps I2C electrical-layer concepts at theory level", () => {
   assert.ok(workspace.includes("open-drain SDA/SCL and pull-up concepts"));
   assert.ok(workspace.includes("bus-capacitance effects"));
+  assert.ok(workspace.includes("Nano ESP32 3.3 V pin-level limit"));
   assert.ok(workspace.includes("board-specific datasheet checks"));
+});
+
+
+test("Volume 4 flags Nano ESP32 board-level voltage compatibility", () => {
+  assert.ok(workspace.includes("Nano ESP32 3.3 V pin-level limit"));
 });
