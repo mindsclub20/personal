@@ -41,10 +41,17 @@ test("planner date, weekday, and task labels use India Standard Time", () => {
 });
 
 test("Thursday includes the core serial communication interfaces", () => {
-  assert.ok(workspace.includes("serial communication (I²C, SPI, UART), including address limits and board-specific datasheet checks"));
+  assert.ok(workspace.includes("serial communication (I²C, SPI, UART), including 7-bit address limits, open-drain SDA/SCL and pull-up concepts, bus-capacitance effects, and board-specific datasheet checks"));
 });
 
 test("EV3 Classroom remains the school default and EV3 MicroPython is optional", () => {
   assert.ok(workspace.includes("EV3 Classroom remains the school default"));
   assert.ok(workspace.includes("EV3 MicroPython is optional only with teacher-approved compatible setup"));
+});
+
+
+test("Volume 4 keeps I2C electrical-layer concepts at theory level", () => {
+  assert.ok(workspace.includes("open-drain SDA/SCL and pull-up concepts"));
+  assert.ok(workspace.includes("bus-capacitance effects"));
+  assert.ok(workspace.includes("board-specific datasheet checks"));
 });
