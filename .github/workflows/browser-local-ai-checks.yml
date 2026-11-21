@@ -1,0 +1,25 @@
+name: Browser-local AI checks
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - feature/browser-local-llm
+
+jobs:
+  local-ai:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check JavaScript syntax
+        run: |
+          node --check workspace.js
+          node --check local-llm.js
+      - name: Run local AI tests
+        run: node --test tests/*.test.mjs
