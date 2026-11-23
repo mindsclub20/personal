@@ -61,3 +61,9 @@ test("Volume 4 keeps I2C electrical-layer concepts at theory level", () => {
 test("Volume 4 flags Nano ESP32 board-level voltage compatibility", () => {
   assert.ok(workspace.includes("Nano ESP32 3.3 V pin-level limit"));
 });
+
+test("Friday introduces wheel odometry as an estimate and explains accumulated drift", () => {
+  assert.ok(workspace.includes("wheel odometry (motion estimated from wheel-encoder changes)"));
+  assert.ok(workspace.includes("odometry drift should be cross-checked with external sensors"));
+  assert.ok(workspace.includes("cameras or range sensors"));
+});
