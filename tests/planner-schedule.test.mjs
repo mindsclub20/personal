@@ -67,3 +67,10 @@ test("Friday introduces wheel odometry as an estimate and explains accumulated d
   assert.ok(workspace.includes("odometry drift should be cross-checked with external sensors"));
   assert.ok(workspace.includes("cameras or range sensors"));
 });
+
+test("EV3 Classroom is treated as a retired legacy tool with teacher-verified installation status", () => {
+  assert.ok(workspace.includes("LEGO classifies EV3 as retired and unsupported"));
+  assert.ok(workspace.includes("Classroom download window ran through July 2026"));
+  assert.ok(workspace.includes("verify any new installation with the teacher"));
+  assert.ok(workspace.includes("EV3 Classroom remains the school default when already installed through the school"));
+});
