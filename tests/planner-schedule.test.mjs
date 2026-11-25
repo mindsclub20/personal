@@ -74,3 +74,10 @@ test("EV3 Classroom is treated as a retired legacy tool with teacher-verified in
   assert.ok(workspace.includes("verify any new installation with the teacher"));
   assert.ok(workspace.includes("EV3 Classroom remains the school default when already installed through the school"));
 });
+
+test("Wednesday explains the gear-reduction speed–torque trade-off with a LEGO gear example", () => {
+  assert.ok(workspace.includes("gear ratio and the speed–torque trade-off"));
+  assert.ok(workspace.includes("8-tooth driver turning a 24-tooth gear"));
+  assert.ok(workspace.includes("ideal 3:1 speed reduction"));
+  assert.ok(workspace.includes("friction makes real output lower"));
+});
