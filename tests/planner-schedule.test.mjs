@@ -64,7 +64,7 @@ test("Volume 4 flags Nano ESP32 board-level voltage compatibility", () => {
 
 test("Friday introduces wheel odometry as an estimate and explains accumulated drift", () => {
   assert.ok(workspace.includes("wheel odometry (motion estimated from wheel-encoder changes)"));
-  assert.ok(workspace.includes("odometry drift should be cross-checked with external sensors"));
+  assert.ok(workspace.includes("why odometry drift should be cross-checked with external sensors"));
   assert.ok(workspace.includes("cameras or range sensors"));
 });
 
@@ -77,9 +77,9 @@ test("EV3 Classroom is treated as a retired legacy tool with teacher-verified in
 
 test("Wednesday explains the gear-reduction speed–torque trade-off with a LEGO gear example", () => {
   assert.ok(workspace.includes("gear ratio and the speed–torque trade-off"));
-  assert.ok(workspace.includes("8-tooth driver turning a 24-tooth gear"));
-  assert.ok(workspace.includes("ideal 3:1 speed reduction"));
-  assert.ok(workspace.includes("friction makes real output lower"));
+  assert.ok(workspace.includes("8-tooth driver → 24-tooth driven gear = ideal 3:1 reduction"));
+  assert.ok(workspace.includes("speed–torque trade-off"));
+  assert.ok(workspace.includes("friction makes real output torque lower than ideal"));
 });
 
 
