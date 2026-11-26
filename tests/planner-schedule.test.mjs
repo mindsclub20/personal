@@ -81,3 +81,24 @@ test("Wednesday explains the gear-reduction speed–torque trade-off with a LEGO
   assert.ok(workspace.includes("ideal 3:1 speed reduction"));
   assert.ok(workspace.includes("friction makes real output lower"));
 });
+
+
+test("Volume 3 includes wheel circumference, gearing, and chassis geometry", () => {
+  assert.ok(workspace.includes("wheel geometry (circumference C = π × diameter; ideal travel = wheel rotations × C"));
+  assert.ok(workspace.includes("adjusted for any gearbox ratio"));
+  assert.ok(workspace.includes("wheel separation and centre-of-mass placement"));
+});
+
+test("Volume 5 distinguishes ideal differential-drive wheel-speed patterns and odometry drift", () => {
+  assert.ok(workspace.includes("equal wheel speeds → straight; unequal speeds → curve; opposite directions → ideal pivot turn"));
+  assert.ok(workspace.includes("wheel radius and wheel separation"));
+  assert.ok(workspace.includes("encoder odometry and drift"));
+  assert.ok(workspace.includes("external sensors such as cameras or range sensors"));
+});
+
+test("planner provides primary-source references for wheel motion, kinematics, and stability", () => {
+  assert.ok(workspace.includes("https://education.lego.com/en-us/lessons/ev3-dep/make-it-move-with-wheels/"));
+  assert.ok(workspace.includes("https://modernrobotics.northwestern.edu/nu-gm-book-resource/13-1-wheeled-mobile-robots/"));
+  assert.ok(workspace.includes("https://control.ros.org/master/doc/ros2_controllers/diff_drive_controller/doc/userdoc.html"));
+  assert.ok(workspace.includes("https://web.mae.ufl.edu/designlab/Class%20Projects/Background%20Information/Center%20of%20gravity.htm"));
+});
