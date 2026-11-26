@@ -92,7 +92,7 @@ test("Volume 3 includes wheel circumference, gearing, and chassis geometry", () 
 test("Volume 5 distinguishes ideal differential-drive wheel-speed patterns and odometry drift", () => {
   assert.ok(workspace.includes("equal wheel speeds → straight; unequal speeds → curve; opposite directions → ideal pivot turn"));
   assert.ok(workspace.includes("wheel radius and wheel separation"));
-  assert.ok(workspace.includes("encoder odometry and drift"));
+  assert.ok(workspace.includes("localization"));
   assert.ok(workspace.includes("external sensors such as cameras or range sensors"));
 });
 
