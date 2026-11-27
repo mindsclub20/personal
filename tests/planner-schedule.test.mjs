@@ -102,3 +102,28 @@ test("planner provides primary-source references for wheel motion, kinematics, a
   assert.ok(workspace.includes("https://control.ros.org/master/doc/ros2_controllers/diff_drive_controller/doc/userdoc.html"));
   assert.ok(workspace.includes("https://web.mae.ufl.edu/designlab/Class%20Projects/Background%20Information/Center%20of%20gravity.htm"));
 });
+
+test("Wednesday introduces manipulator links, joint types, degrees of freedom, and arm geometry", () => {
+  assert.ok(workspace.includes("manipulator basics (links, joints and end-effector)"));
+  assert.ok(workspace.includes("revolute and prismatic joints each contribute one degree of freedom"));
+  assert.ok(workspace.includes("two-link planar-arm geometry"));
+});
+
+test("Thursday distinguishes stable Nano ESP32 firmware from preview indexes without recommending flashing", () => {
+  assert.ok(workspace.includes("stable v1.29.0 (24 Aug 2026)"));
+  assert.ok(workspace.includes("Arduino’s curated index lists a 17 Nov preview"));
+  assert.ok(workspace.includes("upstream MicroPython lists a newer 26 Nov preview"));
+  assert.ok(workspace.includes("previews are not required and no firmware flashing is part of this study plan"));
+});
+
+test("Friday introduces forward kinematics and distinguishes inverse kinematics", () => {
+  assert.ok(workspace.includes("manipulator forward kinematics as the mapping from joint angles and link lengths to end-effector position"));
+  assert.ok(workspace.includes("distinguish it from inverse kinematics"));
+});
+
+test("planner links to university manipulator kinematics and primary board references", () => {
+  assert.ok(workspace.includes("https://opentextbooks.clemson.edu/wangrobotics/chapter/forward-kinematics/"));
+  assert.ok(workspace.includes("https://docs.arduino.cc/micropython/"));
+  assert.ok(workspace.includes("https://micropython.org/download/ARDUINO_NANO_ESP32/"));
+  assert.ok(workspace.includes("https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-reference/peripherals/i2c.html"));
+});
